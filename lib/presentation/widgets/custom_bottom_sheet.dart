@@ -43,7 +43,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
     ItemModel(title: 'Rating'),
     ItemModel(title: 'Popular'),
   ];
-  List<CategoryModel> categoriesList = [];
+  List<ItemModel> categoriesList = [];
 
   final PageController _pageController = PageController();
   int currentPage = 0;
@@ -177,10 +177,10 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                             BlocBuilder<CategoriesManagerCubit, CategoriesManagerState>(
                               builder: (context, categoriesState) {
                                 if (categoriesState is CategoriesLoadedState) {
-                                  categoriesList = categoriesState.categories; // if categories is loaded, updated categoriesList
                                   categoriesState.categories.forEach((element) {
-                                    ItemModel(title: element.categoryName!);
+                                    categoriesList.add(ItemModel(title: element.categoryName!,id: element.categoryId));
                                   });
+                                  debugPrint(categoriesList.length.toString());
                                 }
                                 return AnimatedContainer(
                                     width: MediaQuery.of(context).size.width,
@@ -188,7 +188,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                     padding: EdgeInsets.symmetric(horizontal: AppWidth.s29 * Constants.width),
                                     child: CustomMultipleListCheckBox(
                                       onItemSelected: (items) {},
-                                      multipleCheckBoxList: categoriesItems!,
+                                      multipleCheckBoxList: categoriesList,
                                     ));
                               },
                             )

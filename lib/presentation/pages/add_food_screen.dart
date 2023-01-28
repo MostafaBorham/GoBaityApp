@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:yallabaity/application/app_failures/app_errors.dart';
+import 'package:yallabaity/application/enums/dialog_types.dart';
 import 'package:yallabaity/application/extensions.dart';
 import 'package:yallabaity/application/utils.dart';
 import 'package:yallabaity/domain/entities/requests_entites/category_entity.dart';
@@ -178,19 +179,19 @@ class AddFoodScreen extends StatelessWidget {
                                   listener: (context, state) {
                                     debugPrint(state.runtimeType.toString());
                                     if (state is AddOrUpdateOrDeleteFoodStartingState) {
-                                      _showDialog(context, "Adding Food");
+                                      _showDialog(context, "Adding Food",DialogTypes.LOADING);
                                     }
                                     if (state is AddOrUpdateOrDeleteFoodsFailureState) {
                                       debugPrint(state.message);
 
                                       Navigator.pop(dialogContext!);
-                                      _showDialog(context, state.message);
+                                      _showDialog(context, state.message,DialogTypes.ERROR);
                                     }
                                     if (state is AddOrUpdateOrDeleteFoodStateSuccessState) {
                                       debugPrint(state.message);
 
                                       Navigator.pop(dialogContext!);
-                                      _showDialog(context, state.message);
+                                      _showDialog(context, state.message,DialogTypes.SUCCESS);
                                       Future.delayed(const Duration(seconds: 1)).then((value) => Navigator.pop(dialogContext!));
                                     }
                                   },
@@ -367,12 +368,13 @@ class AddFoodScreen extends StatelessWidget {
         isLoaded: sizesFromServerState is LoadedSizesState,
       );
 
-  Future<dynamic> _showDialog(BuildContext context, String message) => showDialog(
+  Future<dynamic> _showDialog(BuildContext context, String message, DialogTypes dialogType) => showDialog(
         context: context,
         builder: (context) {
           dialogContext = context;
           return CustomDialog(
             message: message,
+            dialogType: dialogType,
           );
         },
       );

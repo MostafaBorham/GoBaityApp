@@ -27,6 +27,7 @@ class AddressDetailsScreen extends StatelessWidget {
   AddressDetailsScreen({Key? key}) : super(key: key);
   Placemark? place;
   AddressModel userAddress = AddressModel(userId: 1);
+  final _streetController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class AddressDetailsScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>?;
     if (arguments != null) {
       place = arguments[placeKey] as Placemark;
+      _streetController.text=place!.street!;
       debugPrint(place!.street);
     }
     return LinearGradientBody(
@@ -54,11 +56,11 @@ class AddressDetailsScreen extends StatelessWidget {
                 SizedBox(
                   height: AppHeight.s45 * Constants.height,
                 ),
-                /*MyCurrentLocationDetails(
+                MyCurrentLocationDetails(
                   governorate: place!.administrativeArea,
                   city: place!.subAdministrativeArea!,
                   street: place!.street,
-                ),*/
+                ),
                 Align(
                     alignment: Alignment.topRight,
                     child: TextButton(
@@ -85,12 +87,13 @@ class AddressDetailsScreen extends StatelessWidget {
                           children: [
                             CustomTextField(
                               hintText: 'street',
+                              controller: _streetController,
                               showError: ErrorsManagerCubit.contains(
                                   context, AppErrors.street),
                               message: ErrorsManagerCubit.getErrorMessage(
                                   context, AppErrors.street),
                               validator: (text) {
-                                if (text!.isEmpty || text.length < 20) {
+                                if (text!.isEmpty) {
                                   ErrorsManagerCubit.addErrorType(
                                       context, AppErrors.street);
                                 }
@@ -118,7 +121,7 @@ class AddressDetailsScreen extends StatelessWidget {
                               message: ErrorsManagerCubit.getErrorMessage(
                                   context, AppErrors.buildingName),
                               validator: (text) {
-                                if (text!.isEmpty || text.length < 3) {
+                                if (text!.isEmpty) {
                                   ErrorsManagerCubit.addErrorType(
                                       context, AppErrors.buildingName);
                                 }
@@ -146,7 +149,7 @@ class AddressDetailsScreen extends StatelessWidget {
                               message: ErrorsManagerCubit.getErrorMessage(
                                   context, AppErrors.floor),
                               validator: (text) {
-                                if (text!.isEmpty || text.length < 3) {
+                                if (text!.isEmpty) {
                                   ErrorsManagerCubit.addErrorType(
                                       context, AppErrors.floor);
                                 }
@@ -174,7 +177,7 @@ class AddressDetailsScreen extends StatelessWidget {
                               message: ErrorsManagerCubit.getErrorMessage(
                                   context, AppErrors.apartmentNumber),
                               validator: (text) {
-                                if (text!.isEmpty || text.length < 3) {
+                                if (text!.isEmpty) {
                                   ErrorsManagerCubit.addErrorType(
                                       context, AppErrors.apartmentNumber);
                                 }
@@ -201,10 +204,9 @@ class AddressDetailsScreen extends StatelessWidget {
                                   dismissCustomDialog();
                                   showCustomDialog(context,
                                       message: state.message);
-                                  Timer(Duration(milliseconds: Constants.dm2),
-                                      () {
-                                    dismissCustomDialog();
-                                  });
+                                  Timer(Duration(milliseconds: Constants.dm2), () {
+                                dismissCustomDialog();
+                              });
                                 }
                                 if (state is UserSavingAddressState) {
                                   showCustomDialog(context,
@@ -224,8 +226,7 @@ class AddressDetailsScreen extends StatelessWidget {
                                   text: 'Save Address',
                                   onPressed: () {
                                     formKey.currentState!.validate();
-                                    if (!ErrorsManagerCubit.hasErrors(
-                                        context)) {
+                                    if (!ErrorsManagerCubit.hasErrors(context)) {
                                       formKey.currentState!.save();
                                       UserCubit.saveUserAddressEvent(
                                           context, userAddress);

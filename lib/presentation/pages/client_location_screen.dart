@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:yallabaity/application/enums/dialog_types.dart';
 import 'package:yallabaity/network_layer/models/data_models/location_model.dart';
 import 'package:yallabaity/presentation/Dialogs/dialogs.dart';
 import 'package:yallabaity/presentation/manager/cubit_dialog/dialog_manager_cubit.dart';
@@ -24,6 +25,7 @@ import 'address_details.dart';
 class ClientLocationScreen extends StatelessWidget {
   final LatLng egyptLatLang = const LatLng(30.033333, 31.233334);
   GoogleMapController? googleMapController;
+  Set<Marker> markers={};
   double? latitude;
   double? longitude;
   String message = '';
@@ -41,6 +43,51 @@ class ClientLocationScreen extends StatelessWidget {
         child: BlocBuilder<DialogManagerCubit, DialogManagerState>(
           builder: (context, state) => Stack(
             children: [
+              /*Center(
+                child: Card(
+                  elevation: 2,
+                  child: Container(
+                    color:Colors.red,
+                    width: 40,
+                    height: 100,
+                    child: Column(
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () async {
+                              var currentZoomLevel = await googleMapController!.getZoomLevel();
+
+                              currentZoomLevel = currentZoomLevel + 2;
+                              googleMapController!.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(latitude!, longitude!),
+                                    zoom: currentZoomLevel,
+                                  ),
+                                ),
+                              );
+                            }),
+                        SizedBox(height: 2),
+                        IconButton(
+                            icon: Icon(Icons.remove),
+                            onPressed: () async {
+                              var currentZoomLevel = await googleMapController!.getZoomLevel();
+                              currentZoomLevel = currentZoomLevel - 2;
+                              if (currentZoomLevel < 0) currentZoomLevel = 0;
+                              googleMapController!.animateCamera(
+                                CameraUpdate.newCameraPosition(
+                                  CameraPosition(
+                                    target: LatLng(latitude!, longitude!),
+                                    zoom: currentZoomLevel,
+                                  ),
+                                ),
+                              );
+                            }),
+                      ],
+                    ),
+                  ),
+                ),
+              ),*/
               SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
@@ -50,19 +97,27 @@ class ClientLocationScreen extends StatelessWidget {
                       latitude = state.latitude;
                       longitude = state.longitude;
                       googleMapController!.animateCamera(
-                          CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(latitude!, longitude!), zoom: 18)));
+                          CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(latitude!, longitude!), zoom: 25)));
+                      markers.add(Marker(markerId: MarkerId('1'),position: LatLng(latitude!, longitude!),),);
                     }
                   },
                   builder: (context, state) {
                     locationBuilderContext = context;
-                    return GoogleMap(
-                      onMapCreated: (controller) {
-                        googleMapController = controller;
-                        LocationManagerCubit.getLocationEvent(context);
-                      },
-                      initialCameraPosition: CameraPosition(
-                        target: egyptLatLang,
-                        zoom: 12,
+                    return Padding(
+                      padding:  EdgeInsets.only(bottom: AppHeight.s90*Constants.height),
+                      child: GoogleMap(
+                        padding: EdgeInsets.only(
+                            bottom:AppHeight.s90*Constants.height),
+                        onMapCreated: (controller) {
+                          googleMapController = controller;
+                          LocationManagerCubit.getLocationEvent(context);
+                        },
+                        initialCameraPosition: CameraPosition(
+                          target: egyptLatLang,
+                          zoom: 12,
+                        ),
+                        markers: markers,
+                        zoomControlsEnabled: true,
                       ),
                     );
                   },
@@ -214,6 +269,7 @@ class ClientLocationScreen extends StatelessWidget {
                         child: CustomDialog(
                           showCircularLoading: state is! UpdatedUserLocation,
                           message: message,
+                          dialogType: DialogTypes.SUCCESS,
                         ),
                       ),
                     ));

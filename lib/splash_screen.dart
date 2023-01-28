@@ -89,7 +89,7 @@ class SplashScreen extends StatelessWidget {
             Timer(
               const Duration(seconds: 4),
               () {
-                Navigator.of(context).pushReplacementNamed(Routes.clientLocationRoute);
+                Navigator.of(context).pushReplacementNamed(Routes.homeRoute);
                 debugPrint('user is not registered');
               },
             );

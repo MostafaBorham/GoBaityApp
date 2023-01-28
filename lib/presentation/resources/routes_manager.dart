@@ -73,7 +73,7 @@ class RouteGenerator {
       case Routes.loginRoute:
         return pageFadeTransition(widget: LoginScreen(), routeSettings: routeSettings);
       case Routes.homeRoute:
-        return pageFadeTransition(widget: const HomeScreen(), routeSettings: routeSettings);
+        return pageFadeTransition(widget:  HomeScreen(), routeSettings: routeSettings);
       case Routes.cartRoute:
         return pageFadeTransition(widget: CartScreen(), routeSettings: routeSettings);
       case Routes.foodDetailsRoute:

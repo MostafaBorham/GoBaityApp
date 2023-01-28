@@ -9,9 +9,15 @@ import 'package:yallabaity/application/app_failures/failures.dart';
 import 'package:yallabaity/application/app_failures/map_failure_to_massage.dart';
 import 'package:yallabaity/domain/entities/requests_entites/user_entity.dart';
 import 'package:yallabaity/domain/entities/response_entities/address_response_entity.dart';
+import 'package:yallabaity/domain/entities/response_entities/check_otp_response_entity.dart';
+import 'package:yallabaity/domain/entities/response_entities/favourite_response_entity.dart';
+import 'package:yallabaity/domain/entities/response_entities/send_otp_response_entity.dart';
 import 'package:yallabaity/domain/entities/response_entities/user_response_entity.dart';
 import 'package:yallabaity/domain/use_cases/user_usecases.dart';
+import 'package:yallabaity/network_layer/models/data_models/SendOtpWithPhoneModel.dart';
 import 'package:yallabaity/network_layer/models/data_models/address_model.dart';
+import 'package:yallabaity/network_layer/models/data_models/check_otp_model.dart';
+import 'package:yallabaity/network_layer/models/data_models/favourite_model.dart';
 import 'package:yallabaity/network_layer/models/data_models/location_model.dart';
 import 'package:yallabaity/network_layer/models/data_models/user_model.dart';
 import 'package:yallabaity/network_layer/repositories/user_repo_impl.dart';
@@ -42,12 +48,46 @@ class UserCubit extends Cubit<UserState> {
             state= UserSavedAddressState(addressResponseEntity: addressResponseEntity));
   emit(state!);
   }
+
+  sendOtp(SendOtpModel sendOtpWithPhoneModel) async {
+    emit(SendingOtpState());
+    Either<Failure, SendOtpResponseEntity> either=await userUseCase.sendOtp(sendOtpWithPhoneModel.toEntity());
+    UserState? state;
+    either.fold(
+            (Failure failure) =>
+        state=FailedSendOtpState(message: mapFailureToMessage(failure)),
+            (SendOtpResponseEntity sendOtpResponseEntity) =>
+        state= SendedOtpState(sendOtpResponseEntity: sendOtpResponseEntity));
+    emit(state!);
+  }
+  checkOtp(CheckOtpModel checkOtpWithPhoneModel) async {
+    emit(CheckingOtpState());
+    Either<Failure, CheckOtpResponseEntity> either=await userUseCase.checkOtp(checkOtpWithPhoneModel.toEntity());
+    UserState? state;
+    either.fold(
+            (Failure failure) =>
+        state=FailedCheckOtpState(message: mapFailureToMessage(failure)),
+            (CheckOtpResponseEntity checkOtpResponseEntity) =>
+        state= CheckedOtpState(checkOtpResponseEntity: checkOtpResponseEntity));
+    emit(state!);
+  }
+  addToFavourites(FavouriteModel favourite) async {
+    emit(AddingToFavouritesState());
+    Either<Failure, FavouriteResponseEntity> either=await userUseCase.addToFavourites(favourite.toEntity());
+    UserState? state;
+    either.fold(
+            (Failure failure) =>
+            state=FailedAddToFavouritesState(message: mapFailureToMessage(failure)),
+            (FavouriteResponseEntity favouriteResponseEntity) =>
+            state= AddedToFavouritesState(favouriteResponseEntity: favouriteResponseEntity));
+  emit(state!);
+  }
   loginUser({required String phone, required String password}) async {
-    emit(UserLoginState());
+    emit(UserLoginingState());
     Either<Failure, UserResponseEntity> either =
         await userUseCase.login(phone: phone, password: password);
     either.fold(
-        (Failure failure) => mapFailureToMessage(failure),
+        (Failure failure) => emit(LoginUserFailedState(message: mapFailureToMessage(failure))),
         (UserResponseEntity userResponseEntity) =>
             emit(UserLoggedInState(userResponseEntity)));
     // UserState state = mapEventToState();
@@ -80,6 +120,7 @@ class UserCubit extends Cubit<UserState> {
   }
 
   UserState mapEventToState(Either<Failure, UserResponseEntity> either) {
+    debugPrint('mapEventToState');
     UserState? state;
     either.fold(
         (Failure failure) => state =
@@ -95,6 +136,15 @@ class UserCubit extends Cubit<UserState> {
   }
   static saveUserAddressEvent(BuildContext context, AddressModel address) {
     return BlocProvider.of<UserCubit>(context).saveUserAddress(address);
+  }
+  static sendOtpEvent(BuildContext context, SendOtpModel sendOtp) {
+    return BlocProvider.of<UserCubit>(context).sendOtp(sendOtp);
+  }
+  static checkOtpEvent(BuildContext context, CheckOtpModel checkOtp) {
+    return BlocProvider.of<UserCubit>(context).checkOtp(checkOtp);
+  }
+  static addToFavouritesEvent(BuildContext context, FavouriteModel favourite) {
+    return BlocProvider.of<UserCubit>(context).addToFavourites(favourite);
   }
   static loginUserEvent(
           {required BuildContext context,

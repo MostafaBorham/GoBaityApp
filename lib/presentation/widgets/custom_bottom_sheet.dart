@@ -16,13 +16,18 @@ import '../manager/cubit_categories/categories_manager_cubit.dart';
 import '../resources/strings_manager.dart';
 
 class CustomBottomSheet extends StatefulWidget {
-  const CustomBottomSheet({Key? key}) : super(key: key);
+  final Function(ItemModel item)? onItemSelected;
+  final Function(ItemModel item)? onCategorySelected;
+  final Function()? onPressed;
+  const CustomBottomSheet({this.onPressed,this.onItemSelected,Key? key, this.onCategorySelected}) : super(key: key);
 
   @override
   State<CustomBottomSheet> createState() => _CustomBottomSheetState();
 }
 
 class _CustomBottomSheetState extends State<CustomBottomSheet> {
+  int currentSelectedSortingFilterIndex=0;
+  int currentSelectedCategoryFilterIndex=0;
   List<ItemModel> tabs = [
     //tabs list
     ItemModel(title: AppStrings.sorting, active: true), //sorting tab
@@ -30,20 +35,11 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
   ];
   List<ItemModel> categoriesItems = [];
   List<ItemModel> sortingList = [
-    ItemModel(title: 'Price : Low and average prices'),
-    ItemModel(title: 'Delivery Time'),
-    ItemModel(title: 'Rating'),
-    ItemModel(title: 'Popular'),
-    ItemModel(title: 'Price : Low and average prices'),
-    ItemModel(title: 'Delivery Time'),
-    ItemModel(title: 'Rating'),
-    ItemModel(title: 'Popular'),
-    ItemModel(title: 'Price : Low and average prices'),
-    ItemModel(title: 'Delivery Time'),
-    ItemModel(title: 'Rating'),
-    ItemModel(title: 'Popular'),
+    ItemModel(title: 'Price : Low and average prices',id: 0),
+    ItemModel(title: 'Delivery Time',id: 1),
+    ItemModel(title: 'Rating',id: 2),
   ];
-  List<CategoryModel> categoriesList = [];
+  List<ItemModel> categoriesList = [];
 
   final PageController _pageController = PageController();
   int currentPage = 0;
@@ -171,24 +167,25 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                 duration: const Duration(milliseconds: 500),
                                 padding: EdgeInsets.symmetric(horizontal: AppWidth.s29 * Constants.width),
                                 child: CustomSingleListCheckBox(
-                                  onItemSelected: (item) {},
+                                  onItemSelected: widget.onItemSelected,
                                   singleCheckBoxList: sortingList,
                                 )),
                             BlocBuilder<CategoriesManagerCubit, CategoriesManagerState>(
                               builder: (context, categoriesState) {
                                 if (categoriesState is CategoriesLoadedState) {
-                                  categoriesList = categoriesState.categories; // if categories is loaded, updated categoriesList
-                                  categoriesState.categories.forEach((element) {
-                                    ItemModel(title: element.categoryName!);
-                                  });
+                                  categoriesList.clear();
+                                  for (var element in categoriesState.categories) {
+                                    categoriesList.add(ItemModel(title: element.categoryName!,id: element.categoryId));
+                                  }
+                                  debugPrint(categoriesList.length.toString());
                                 }
                                 return AnimatedContainer(
                                     width: MediaQuery.of(context).size.width,
                                     duration: const Duration(milliseconds: 500),
                                     padding: EdgeInsets.symmetric(horizontal: AppWidth.s29 * Constants.width),
-                                    child: CustomMultipleListCheckBox(
-                                      onItemSelected: (items) {},
-                                      multipleCheckBoxList: categoriesItems!,
+                                    child: CustomSingleListCheckBox(
+                                      onItemSelected: widget.onCategorySelected,
+                                      singleCheckBoxList: categoriesList,
                                     ));
                               },
                             )
@@ -215,7 +212,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                   width: double.maxFinite,
                   child: CustomButton(
                     text: 'Show all results',
-                    onPressed: () {},
+                    onPressed: widget.onPressed,
                   ),
                 ),
               ),

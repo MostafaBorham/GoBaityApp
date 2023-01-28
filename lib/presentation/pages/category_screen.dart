@@ -45,6 +45,8 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
   bool loadingMoreMostPopularFoods = false;
   bool loadingMoreMostSeenFoods = false;
   String searchedText = '';
+  String? filterType;
+  int? filterCategoryId;
   BuildContext? mostPopularContext;
   BuildContext? mostSeenContext;
   int? categoryIndex;
@@ -82,19 +84,20 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                     hintText: AppStrings.search, //hint for textfield
                     showFilter: true, //show filter for search widget
                     onChanged: (text) {
+                      searchedText=text;
                       /* on text updated use foods manager cubit to update most popular horizontal listview*/
                       FoodsManagerCubit.getFoodsEvent(mostPopularContext!,
                           foodGetParams: FoodsGetParamsModel(
                             categoryId: categoriesList[_tabController!.index].categoryId!, //category id
                             page: 0, // start from page 0
-                            foodName: text, //the change value from text field
+                            foodName: searchedText, //the change value from text field
                             order: Sorting.mostPopular, //sort by most popular
                           ));
                       FoodsManagerCubit.getFoodsEvent(mostSeenContext!,
                           foodGetParams: FoodsGetParamsModel(
                             categoryId: categoriesList[_tabController!.index].categoryId!,
                             page: 0, // start from page 0
-                            foodName: text, //the change value from text field
+                            foodName: searchedText, //the change value from text field
                             order: Sorting.mostWatched, //sort by most seen
                           ));
                       //  SearchManagerCubit.searchWordEvent(context: context, word: text);
@@ -104,8 +107,44 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                         context: context,
                         isScrollControlled: true, //set bottom sheet to full height
                         backgroundColor: ColorsManager.transparent, //bottom sheet background color is transparent
-                        builder: (context) => const CustomBottomSheet(// stateful custom widget
-
+                        builder: (context) =>  CustomBottomSheet(
+                          onItemSelected: (item) { // for filter sorting type
+                            if(item.id==0){
+                              filterType=Sorting.price;
+                            }
+                            else if(item.id==1){
+                              filterType=Sorting.preparationTime;
+                            }
+                            else if(item.id==2){
+                              filterType=Sorting.rate;
+                            }
+                          },
+                          onCategorySelected: (categoryFilter){//for filter category type
+                            filterCategoryId=categoryFilter.id;
+                          },
+                          onPressed: (){// for show all results
+                            if(filterType!=null || filterCategoryId!=null){
+                              Navigator.pop(context);
+                              if(filterCategoryId!=null)_tabController!.animateTo(categoriesList.indexWhere((category) => category.categoryId==filterCategoryId));
+                              FoodsManagerCubit.getFoodsEvent(mostPopularContext!,
+                                  foodGetParams: FoodsGetParamsModel(
+                                    categoryId: filterCategoryId?? categoriesList[_tabController!.index].categoryId!, //category id
+                                    page: 0, // start from page 0
+                                    foodName: searchedText, //the change value from text field
+                                    order: filterType, //sort by most popular
+                                  ));
+                              FoodsManagerCubit.getFoodsEvent(mostSeenContext!,
+                                  foodGetParams: FoodsGetParamsModel(
+                                    categoryId: filterCategoryId?? categoriesList[_tabController!.index].categoryId!,
+                                    page: 0, // start from page 0
+                                    foodName: searchedText, //the change value from text field
+                                    order: filterType, //sort by most seen
+                                  ));
+                              filterType=null;
+                              filterCategoryId=null;
+                            }
+                          },
+                          // stateful custom widget
                             ),
                       );
                     },
@@ -144,6 +183,9 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                             (e) => _buildPage(e),
                           )
                           .toList()),
+                ),
+                SizedBox(
+                  height: AppHeight.s50 * Constants.height,
                 ),
               ],
             );
@@ -372,7 +414,7 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                                           FoodItem(
                                             food: foodsState is FoodsLoadedState ? mostSeenFoods[index] : null,
                                             isLoaded: foodsState is FoodsLoadedState,
-                                            width: AppWidth.s252 * Constants.width,
+                                            width: AppWidth.s200 * Constants.width,
                                             onTap: () {
                                               //  FoodManagerCubit.getFoodByIdEvent(context, foods![index].foodId!);
 

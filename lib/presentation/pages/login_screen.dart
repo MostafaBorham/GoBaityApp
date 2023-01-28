@@ -51,13 +51,13 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: AppHeight.s31 * Constants.height,
                     ),
-                    CustomTitle(text: AppStrings.login),
+                    CustomTitle(text: AppStrings.translate(AppStrings.login)),
                     SizedBox(
                       height: AppHeight.s10 * Constants.height,
                     ),
                     CustomRichText(
-                      text: AppStrings.dontHaveAccount,
-                      btnText: AppStrings.register,
+                      text: AppStrings.translate(AppStrings.dontHaveAccount),
+                      btnText: AppStrings.translate(AppStrings.register),
                       onPressed: () {
                         Navigator.of(context).pushNamed(Routes.clientApplyRoute);
                       },
@@ -111,7 +111,7 @@ class LoginScreen extends StatelessWidget {
       );
 
   _buildPasswordWidget(BuildContext context) => PasswordTextField(
-    text: AppStrings.createPassword,
+    text: AppStrings.translate(AppStrings.createPassword),
     showError: ErrorsManagerCubit.contains(context, AppErrors.password),
     message:
     ErrorsManagerCubit.getErrorMessage(context, AppErrors.password),
@@ -167,7 +167,7 @@ class LoginScreen extends StatelessWidget {
     return SizedBox(
       width: double.maxFinite,
       child: CustomButton(
-        text: AppStrings.signIn,
+        text: AppStrings.translate(AppStrings.signIn),
         onPressed: () {
           formKey.currentState!.validate();
           debugPrint(ErrorsManagerCubit.hasErrors(context).toString());
@@ -178,7 +178,7 @@ class LoginScreen extends StatelessWidget {
                 password: password,
                 phone: '0$phone',
               ),
-              VerificationScreen.userLoginOrRegister: AppStrings.login
+              VerificationScreen.userLoginOrRegister: AppStrings.translate(AppStrings.login)
             });
           }
           // Navigator.of(context).pushReplacementNamed(Routes.clientApplyRoute);

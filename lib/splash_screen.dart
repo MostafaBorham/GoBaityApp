@@ -121,7 +121,7 @@ class SplashScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 100),
                 child: AutoSizeText(
-                  AppStrings.slogan,
+                  AppStrings.translate(AppStrings.slogan),
                   style: getRegularStyle(fontSize: 15, color: ColorsManager.white),
                   maxLines: 2,
                   textAlign: TextAlign.center,

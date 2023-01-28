@@ -50,13 +50,13 @@ class ClientApplyScreen extends StatelessWidget {
                   SizedBox(
                     height: AppHeight.s31 * Constants.height,
                   ),
-                  CustomTitle(text: AppStrings.createAccount),
+                  CustomTitle(text: AppStrings.translate(AppStrings.createAccount)),
                   SizedBox(
                     height: AppHeight.s10 * Constants.height,
                   ),
                   CustomRichText(
-                    text: AppStrings.alreadyHaveAccount,
-                    btnText: AppStrings.login,
+                    text: AppStrings.translate(AppStrings.alreadyHaveAccount),
+                    btnText: AppStrings.translate(AppStrings.login),
                     textBtnColor: ColorsManager.maximumPurple,
                     onPressed: () {
                       _onLoginButtonPressed(context);
@@ -80,7 +80,7 @@ class ClientApplyScreen extends StatelessWidget {
                         padding: EdgeInsets.symmetric(
                             horizontal: AppWidth.s40 * Constants.width),
                         child: Text(
-                          AppStrings.agreeSigningUp,
+                          AppStrings.translate(AppStrings.agreeSigningUp),
                           textAlign: TextAlign.center,
                           style: getMediumStyle(
                               fontSize: 13, color: ColorsManager.eerieBlack),
@@ -134,7 +134,7 @@ class ClientApplyScreen extends StatelessWidget {
     return SizedBox(
       width: double.maxFinite,
       child: CustomButton(
-        text: AppStrings.register,
+        text: AppStrings.translate(AppStrings.register),
         onPressed: () {
           _buildOnRegisterButtonPressed(context);
         },
@@ -146,7 +146,7 @@ class ClientApplyScreen extends StatelessWidget {
       Navigator.of(context).pushNamed(Routes.loginRoute);
 
   _buildPasswordWidget(BuildContext context) => PasswordTextField(
-        text: AppStrings.createPassword,
+        text: AppStrings.translate(AppStrings.createPassword),
         showError: ErrorsManagerCubit.contains(context, AppErrors.password),
         message:
             ErrorsManagerCubit.getErrorMessage(context, AppErrors.password),
@@ -201,7 +201,7 @@ class ClientApplyScreen extends StatelessWidget {
       );
 
   _buildNameWidget(BuildContext context) => CustomTextField(
-        hintText: 'Name',
+        hintText: AppStrings.translate(AppStrings.name),
         showError: ErrorsManagerCubit.contains(context, AppErrors.name),
         message: ErrorsManagerCubit.getErrorMessage(context, AppErrors.name),
         validator: (text) {

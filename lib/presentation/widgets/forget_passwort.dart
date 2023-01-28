@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:yallabaity/presentation/resources/colors_manager.dart';
 import 'package:yallabaity/presentation/resources/constants_manager.dart';
 import 'package:yallabaity/presentation/resources/fonts_manager.dart';
+import 'package:yallabaity/presentation/resources/strings_manager.dart';
 import 'package:yallabaity/presentation/resources/styles_manager.dart';
 import 'package:yallabaity/presentation/resources/values_manager.dart';
 
@@ -17,7 +18,7 @@ class ForgetPassword extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       onTap: _onTap,
       child: Text(
-        'Forget Password ?',
+        AppStrings.translate(AppStrings.forgetPassword),
         style: getMediumStyle(
           color: ColorsManager.maximumPurple,
           fontSize: AppWidth.s13*Constants.width,

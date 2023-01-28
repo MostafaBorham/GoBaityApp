@@ -125,7 +125,7 @@ class SizeItem extends StatelessWidget {
                                 width: AppWidth.s11 * Constants.width,
                               ),
                               Text(
-                                AppStrings.egp,
+                                AppStrings.translate(AppStrings.egp),
                                 style: getSemiBoldStyle(
                                     color: ColorsManager.eerieBlack,
                                     fontSize: AppWidth.s17 * Constants.width),
@@ -138,9 +138,9 @@ class SizeItem extends StatelessWidget {
                         ),
                         TwoButtonsSelectWidget(
                           btn1Text: state is EditSizeItemState
-                              ? AppStrings.edit.capitalizeFirst!
-                              : AppStrings.save.capitalizeFirst!,
-                          btn2Text: AppStrings.cancel.capitalizeFirst!,
+                              ? AppStrings.translate(AppStrings.edit.capitalizeFirst!)
+                              : AppStrings.translate(AppStrings.save.capitalizeFirst!),
+                          btn2Text: AppStrings.translate(AppStrings.cancel.capitalizeFirst!),
                           whichButtonSelected: (button) {
                             _buttonSelected(button, context);
                           },
@@ -164,7 +164,7 @@ class SizeItem extends StatelessWidget {
         builder: (context, state) {
           return CustomTextField(
             controller: _priceController,
-            hintText: AppStrings.price,
+            hintText: AppStrings.translate(AppStrings.price),
             isNumber: true,
             message:
                 ErrorsManagerCubit.getErrorMessage(context, AppErrors.price),
@@ -190,7 +190,7 @@ class SizeItem extends StatelessWidget {
     return BlocBuilder<ErrorsManagerCubit, ErrorsManagerState>(
       builder: (context, state) => CustomTextField(
         controller: _descriptionController,
-        hintText: AppStrings.sizeDescription,
+        hintText: AppStrings.translate(AppStrings.sizeDescription),
         maxLines: 3,
         message:
             ErrorsManagerCubit.getErrorMessage(context, AppErrors.description),

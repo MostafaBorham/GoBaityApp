@@ -19,43 +19,55 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.deferToChild,
-      onTap: onTap,
-      child: isLoaded?Column(//set widgets vertically
-        children: [
-          Container(
-            width: AppWidth.s53*Constants.width,
-            height: AppHeight.s53*Constants.height,
-            clipBehavior: Clip.antiAliasWithSaveLayer,// is used to clip the internal child widget of container when u define border radius,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle
-            ),
+    return SizedBox(
+      width: AppWidth.s80*Constants.width,
+      height: AppWidth.s80*Constants.width,
+      child: GestureDetector(
+        behavior: HitTestBehavior.deferToChild,
+        onTap: onTap,
+        child: isLoaded?Column(//set widgets vertically
+          children: [
+            Container(
+              width: AppWidth.s53*Constants.width,
+              height: AppHeight.s53*Constants.height,
+              clipBehavior: Clip.antiAliasWithSaveLayer,// is used to clip the internal child widget of container when u define border radius,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle
+              ),
 
-            //        backgroundColor: Color.,
-            child: Image.network(
-              ApiConstants.fullUrl + category!.imagePath!,
-              fit: BoxFit.none,
+              //        backgroundColor: Color.,
+              child: Image.network(
+                ApiConstants.fullUrl + category!.imagePath!,
+                fit: BoxFit.contain,
+              ),
             ),
-          ),
-          AutoSizeText(
-            category!.categoryName!,
-            style: getSemiBoldStyle(fontSize: 13, height: 2),
-          ),
-        ],
-      ):Column(//set widgets vertically
-        children: [
-          ShimmerWidget.fromCircular(
-            radius: AppWidth.s53 * Constants.width / 2,
-          ),
-          SizedBox(
-            height: AppHeight.s10 * Constants.height,
-          ),
-          ShimmerWidget(
-            height: AppHeight.s10 * Constants.height,
-            width: AppWidth.s40 * Constants.width,
-          )
-        ],
+            Container(
+              height: AppWidth.s35*Constants.width,
+              width: AppWidth.s100*Constants.width,
+              alignment: AlignmentDirectional.bottomCenter,
+              child: AutoSizeText(
+                category!.categoryName!,
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                style: getSemiBoldStyle(fontSize: 13, height: 2,),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ):Column(//set widgets vertically
+          children: [
+            ShimmerWidget.fromCircular(
+              radius: AppWidth.s53 * Constants.width / 2,
+            ),
+            SizedBox(
+              height: AppHeight.s10 * Constants.height,
+            ),
+            ShimmerWidget(
+              height: AppHeight.s10 * Constants.height,
+              width: AppWidth.s40 * Constants.width,
+            )
+          ],
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:yallabaity/application/app_localization.dart';
 import 'package:yallabaity/presentation/resources/assets_manager.dart';
 import 'package:yallabaity/presentation/resources/colors_manager.dart';
 import 'package:yallabaity/presentation/resources/constants_manager.dart';
@@ -30,6 +31,7 @@ class CustomIconButton extends StatelessWidget {
       child: SvgPicture.asset(
         _asset,
         fit: BoxFit.fill,
+        matchTextDirection: true,
         color: _color,
       ),
     );

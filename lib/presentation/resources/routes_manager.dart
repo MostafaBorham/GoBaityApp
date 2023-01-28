@@ -8,7 +8,7 @@ import 'package:yallabaity/presentation/pages/category_screen.dart';
 import 'package:yallabaity/presentation/pages/checkout_screen.dart';
 import 'package:yallabaity/presentation/pages/client_apply_screen.dart';
 import 'package:yallabaity/presentation/pages/home_screen.dart';
-import 'package:yallabaity/presentation/pages/client_location_screen.dart';
+import 'package:yallabaity/presentation/pages/map_location_screen.dart';
 import 'package:yallabaity/presentation/pages/client_profile_screen.dart';
 import 'package:yallabaity/presentation/pages/cook_profile_screen.dart';
 import 'package:yallabaity/presentation/pages/done_screen.dart';
@@ -16,7 +16,7 @@ import 'package:yallabaity/presentation/pages/food_details_screen.dart';
 import 'package:yallabaity/presentation/pages/login_screen.dart';
 import 'package:yallabaity/presentation/pages/my_foods_screen.dart';
 import 'package:yallabaity/presentation/pages/orders_history_screen.dart';
-import 'package:yallabaity/presentation/pages/provider_apply_screen.dart';
+import 'package:yallabaity/presentation/pages/cook_apply_screen.dart';
 import 'package:yallabaity/presentation/pages/provider_orders_screen.dart';
 import 'package:yallabaity/presentation/pages/provider_profile_screen.dart';
 import 'package:yallabaity/presentation/pages/saved_screen.dart';
@@ -53,7 +53,7 @@ class Routes {
   static const String checkoutRoute = "/checkout";
   static const String doneRoute = "/done";
   static const String cookProfileRoute = "/cook profile";
-  static const String providerApplyRoute = "/provider apply";
+  static const String cookApplyRoute = "/provider apply";
   static const String providerOrdersRoute = "/provider orders";
   static const String providerProfileRoute = "/provider profile ";
   static const String walletRoute = "/wallet ";
@@ -108,8 +108,8 @@ class RouteGenerator {
         return pageFadeTransition(widget: DoneScreen(), routeSettings: routeSettings);
       case Routes.cookProfileRoute:
         return pageFadeTransition(widget: CookProfileScreen(cook: null), routeSettings: routeSettings);
-      case Routes.providerApplyRoute:
-        return pageFadeTransition(widget: const ProviderApplyScreen(), routeSettings: routeSettings);
+      case Routes.cookApplyRoute:
+        return pageFadeTransition(widget: const CookApplyScreen(), routeSettings: routeSettings);
       case Routes.providerOrdersRoute:
         return pageFadeTransition(widget: ProviderOrdersScreen(), routeSettings: routeSettings);
       case Routes.providerProfileRoute:

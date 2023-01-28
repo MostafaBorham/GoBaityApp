@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:yallabaity/application/app_api_constants/api_constants.dart';
+import 'package:yallabaity/application/app_localization.dart';
 import 'package:yallabaity/application/enums/app_languages.dart';
 import 'package:yallabaity/application/extensions.dart';
 import 'package:yallabaity/application/app_failures/exception.dart';
@@ -22,7 +23,8 @@ class NetworkService {
   NetworkService({required this.client});
 
   Future<Map<String, dynamic>?> postOrUpdateMultipart(
-      {RequestType type = RequestType.post,
+      {
+        RequestType type = RequestType.post,
       String baseUrl = ApiConstants.baseUrl,
       required String entity,
       required Map<String, dynamic> body,
@@ -39,7 +41,7 @@ class NetworkService {
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'charset': 'utf-8',
-      'Accept-Language': appLanguages[language]!
+      'Accept-Language': AppLocalization.apiLocaleCode
     };
     http.MultipartRequest request = http.MultipartRequest(type == RequestType.update ? 'PUT' : 'POST', uri);
     request.headers.addAll(header);
@@ -99,7 +101,7 @@ class NetworkService {
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'charset': 'utf-8',
-      'Accept-Language': appLanguages[language]!
+      'Accept-Language': AppLocalization.apiLocaleCode
     };
     http.Response response = (type == RequestType.post)
         ? await http.post(uri, body: body.fromJsonToString, headers: header)
@@ -117,14 +119,15 @@ class NetworkService {
 
   Future<Map<String, dynamic>> get({
     required String api,
+    String baseUrl=ApiConstants.baseUrl,
     Map<String, dynamic>? queryParams,
     AppLanguages language = AppLanguages.english,
   }) async {
-    Uri  uri = Uri.https(ApiConstants.baseUrl, api, queryParams);
+    Uri  uri = Uri.https(baseUrl, api, queryParams);
     Map<String, String> header = {
       'Content-Type': 'application/json',
       'charset': 'utf-8',
-      'Accept-Language': appLanguages[language]!
+      'Accept-Language': AppLocalization.apiLocaleCode
     };
     http.Response response = await client!.get(uri, headers: header);
     debugPrint(uri.toString());

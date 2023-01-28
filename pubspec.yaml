@@ -44,6 +44,8 @@ dependencies:
   fluttertoast:
   lottie:
   flutter_local_notifications:
+  easy_localization:
+  flutter_phoenix:
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +59,7 @@ flutter:
     - assets/images/
     - assets/svg/
     - assets/lottie/
+    - assets/translations/
   fonts:
     - family: Cocon
       fonts:

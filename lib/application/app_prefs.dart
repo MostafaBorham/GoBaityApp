@@ -6,6 +6,7 @@ class AppPrefs {
   final SharedPreferences preferences;
   AppPrefs({required this.preferences});
   static const String prefsUsersKey = 'CACHED_USERS';
+  static const String prefsLanguageKey = 'LANGUAGE';
   static const String prefsUsersAddressKey = 'CACHED_USERS_ADDRESS';
   static const String prefsLoggedInKey = "IS_LOGGED_IN";
   static const String prefsGetStatedKey = "GET_STARTED";
@@ -13,6 +14,8 @@ class AppPrefs {
   static const String prefsUserKey = "User id";
   Future<bool> get isUserLoggedIn async => preferences.getBool(prefsLoggedInKey) ?? false;
   Future<void> get setUserLoggedIn async => preferences.setBool(prefsLoggedInKey, true);
+  bool get isAppEnglish => preferences.getBool(prefsLanguageKey) ?? false;
+  Future<void>  setEnglishLanguage(bool isEnglish) async => await preferences.setBool(prefsLanguageKey, isEnglish);
   Future<void> get logout async => preferences.remove(prefsLoggedInKey);
   Future<bool> get getStartedPressed async => preferences.getBool(prefsGetStatedKey) ?? false;
   Future<UserModel?> get user async{

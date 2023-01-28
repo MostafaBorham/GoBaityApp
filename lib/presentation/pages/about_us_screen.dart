@@ -160,7 +160,7 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
                   width: AppWidth.s21*Constants.width,
                 ),
                 Text(
-                  AppStrings.aboutUs,
+                  AppStrings.translate(AppStrings.aboutUs),
                   style: getSemiBoldStyle(
                     color: appBarItemsColor,
                     fontSize: AppWidth.s20*Constants.width,

@@ -6,7 +6,7 @@ class ApiConstants {
   static const String api='/api/';
   static const String googleApisUrl= 'maps.googleapis.com';
   static const String placesAutoCompleteEntity= 'maps/api/place/autocomplete/json';
-  static const String googleApiKey= "AIzaSyBkg1Hg_DXQw2QoiQefKwBiYvqueqdmm30";
+  static const String googleApiKey= "AIzaSyCyZZrPNBurhaJpstx3RWRGC6QwBVM_Qos";
   static const String subUsersEntity = '/UsersAddreses';
   static const String foodsEntity = '${api}foods';
   static const String citiesEntity = '${api}Governorates';
@@ -20,6 +20,8 @@ class ApiConstants {
   static const String providerEntity = '${api}Foods/Provider';
   static const String locationSubEntity = 'UpdateLatLng';
   static const String userCategoriesEntity = '${api}Categories/GetUsedByProvider';
-  //static const String baseUrl = 'https://yallabety.azurewebsites.net/api/';
+  static const String googleMapsBaseUrl = 'maps.googleapis.com';
+  static const String googleMapsAutoCompleteApi = '/maps/api/place/autocomplete/json';
+
 
 }

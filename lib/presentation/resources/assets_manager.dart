@@ -9,6 +9,7 @@ class AssetsManager {
   static const String beef = "$imagesPath/beef.png";
   static const String food = "$imagesPath/food.png";
   static const String header = "$imagesPath/header.png";
+  static const String redMark = "$imagesPath/redmarker.png";
   static const String salad = "$imagesPath/salad.png";
   static const String provider = "$imagesPath/provider.png";
   static const String ads1 = "$imagesPath/ads1.png";
@@ -22,6 +23,9 @@ class AssetsManager {
   static const String chiefFemaleAvatar = "$svgesPath/chief-female.svg";
 
   static const String favourited = "$svgesPath/favourited.svg";
+  static const String language = "$svgesPath/language.svg";
+  static const String egyptFlag = "$svgesPath/egypt_flag.svg";
+  static const String britshFlag = "$svgesPath/britsh_flag.svg";
   static const String review = "$svgesPath/review.svg";
   static const String drawer = "$svgesPath/drawer.svg";
   static const String search = "$svgesPath/search.svg";

@@ -25,8 +25,8 @@ class CustomBottomSheet extends StatefulWidget {
 class _CustomBottomSheetState extends State<CustomBottomSheet> {
   List<ItemModel> tabs = [
     //tabs list
-    ItemModel(title: AppStrings.sorting, active: true), //sorting tab
-    ItemModel(title: AppStrings.type), //type tab
+    ItemModel(title: AppStrings.translate(AppStrings.sorting), active: true), //sorting tab
+    ItemModel(title: AppStrings.translate(AppStrings.type)), //type tab
   ];
   List<ItemModel> categoriesItems = [];
   List<ItemModel> sortingList = [
@@ -96,7 +96,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                           children: [
                             Text(
                               // filter text
-                              AppStrings.filter, //filter constant string text
+                              AppStrings.translate(AppStrings.filter), //filter constant string text
                               style: getSemiBoldStyle(
                                 //text widget is semibold
                                 color: ColorsManager.eerieBlack, // text color is eerie black
@@ -106,7 +106,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                             SizedBox(width: AppWidth.s75 * Constants.width), // horizontal space between filter and clear widget
                             Text(
                               // clear text
-                              AppStrings.clear, //filter constant string text
+                              AppStrings.translate(AppStrings.clear), //filter constant string text
                               style: getSemiBoldStyle(
                                   color: ColorsManager.eerieBlack, // text color is eerie black
                                   fontSize: AppWidth.s18 * Constants.width // font size is 18
@@ -143,7 +143,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                           padding: EdgeInsets.symmetric(horizontal: AppWidth.s29 * Constants.width),
                           child: Text(
                             // filter by text
-                            AppStrings.filterBy, //filter by constant string text
+                            AppStrings.translate(AppStrings.filterBy), //filter by constant string text
                             style: getMediumStyle(
                               color: ColorsManager.eerieBlack, // text color is eerie black
                               fontSize: AppWidth.s18 * Constants.width, // font size is 18
@@ -177,9 +177,9 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                             BlocBuilder<CategoriesManagerCubit, CategoriesManagerState>(
                               builder: (context, categoriesState) {
                                 if (categoriesState is CategoriesLoadedState) {
-                                  categoriesState.categories.forEach((element) {
+                                  for (var element in categoriesState.categories) {
                                     categoriesList.add(ItemModel(title: element.categoryName!,id: element.categoryId));
-                                  });
+                                  }
                                   debugPrint(categoriesList.length.toString());
                                 }
                                 return AnimatedContainer(

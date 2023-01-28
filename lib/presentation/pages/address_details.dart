@@ -54,11 +54,11 @@ class AddressDetailsScreen extends StatelessWidget {
                 SizedBox(
                   height: AppHeight.s45 * Constants.height,
                 ),
-                /*MyCurrentLocationDetails(
+                MyCurrentLocationDetails(
                   governorate: place!.administrativeArea,
                   city: place!.subAdministrativeArea!,
                   street: place!.street,
-                ),*/
+                ),
                 Align(
                     alignment: Alignment.topRight,
                     child: TextButton(

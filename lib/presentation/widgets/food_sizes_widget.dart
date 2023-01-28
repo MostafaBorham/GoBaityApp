@@ -43,7 +43,7 @@ class FoodSizesListWidget extends StatelessWidget {
             itemBuilder: (context, index) => FoodSizeItem(
               foodSize: sizesList![index],
               buttonColor: sizesList![index].isAdding! ? ColorsManager.steelPink : ColorsManager.maximumPurple,
-              buttonText: sizesList![index].isAdding! ? AppStrings.adding : AppStrings.addToCart,
+              buttonText: sizesList![index].isAdding! ? AppStrings.translate(AppStrings.adding) : AppStrings.translate(AppStrings.addToCart),
               showCircular: sizesList![index].isAdding!,
 
               // isAdding: isAdding! && whichItem == index,

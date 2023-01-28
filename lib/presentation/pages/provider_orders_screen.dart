@@ -86,7 +86,7 @@ class _ProviderOrdersScreenState extends State<ProviderOrdersScreen> {
           width: AppWidth.s11*Constants.width,
           onTap: () {},
         ),
-        title: AppStrings.orders,
+        title: AppStrings.translate(AppStrings.orders),
         backgroundColor: ColorsManager.maximumPurple,
         showBackgroundImage: true,
       ),

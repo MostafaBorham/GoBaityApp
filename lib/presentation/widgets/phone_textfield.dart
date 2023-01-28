@@ -37,7 +37,7 @@ class PhoneTextField extends StatelessWidget {
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(vertical: AppHeight.s17*Constants.height),
-                hintText: AppStrings.phoneNumber,
+                hintText: AppStrings.translate(AppStrings.phoneNumber),
                 hintStyle: getMediumStyle(
                   color: ColorsManager.graniteGray2,
                   fontSize: AppWidth.s14 * Constants.width,

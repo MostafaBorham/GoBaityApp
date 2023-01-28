@@ -37,7 +37,8 @@ class CategoryScreen extends StatefulWidget {
   State<CategoryScreen> createState() => _CategoryScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStateMixin {
+class _CategoryScreenState extends State<CategoryScreen>
+    with TickerProviderStateMixin {
   List<CategoryModel> categoriesList = [];
   List<FoodEntity> mostSeenFoods = [];
   TabController? _tabController;
@@ -50,7 +51,8 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
   int? categoryIndex;
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> data = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    Map<String, dynamic> data =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     if (data != null) {
       categoryIndex = data[CategoryScreen.categoryKey];
       debugPrint('category index is $categoryIndex');
@@ -58,41 +60,51 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
     return ScreenWithKeypad(
       child: Scaffold(
         appBar: CustomAppBar(
-          title: AppStrings.categories, //categories title
-          showBackgroundImage: true, //don't show appbar image, it will be shown only on maximum purple background
+          title: AppStrings.translate(AppStrings.categories), //categories title
+          showBackgroundImage:
+              true, //don't show appbar image, it will be shown only on maximum purple background
         ),
         body: BlocConsumer<CategoriesManagerCubit, CategoriesManagerState>(
           // cubit for categories, this cubit is initialized in gobaity_app.dart file
           listener: (context, categoriesState) {},
           builder: (context, categoriesState) {
             if (categoriesState is CategoriesLoadedState) {
-              categoriesList = categoriesState.categories; // if categories is loaded, updated categoriesList
+              categoriesList = categoriesState
+                  .categories; // if categories is loaded, updated categoriesList
               _tabController = TabController(
-                  length: categoriesList.length, initialIndex: categoryIndex!, vsync: this); // update tab controller
+                  length: categoriesList.length,
+                  initialIndex: categoryIndex!,
+                  vsync: this); // update tab controller
             }
             return Column(
               //set widgets vertically
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SizedBox(height: AppHeight.s19 * Constants.height), //vertical space before search
+                SizedBox(
+                    height: AppHeight.s19 *
+                        Constants.height), //vertical space before search
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: Constants.margin), // margin for search widget
+                  padding: EdgeInsets.symmetric(
+                      horizontal: Constants.margin), // margin for search widget
                   child: Search(
                     // search widget
-                    hintText: AppStrings.search, //hint for textfield
+                    hintText: AppStrings.translate(
+                        AppStrings.search), //hint for textfield
                     showFilter: true, //show filter for search widget
                     onChanged: (text) {
                       /* on text updated use foods manager cubit to update most popular horizontal listview*/
                       FoodsManagerCubit.getFoodsEvent(mostPopularContext!,
                           foodGetParams: FoodsGetParamsModel(
-                            categoryId: categoriesList[_tabController!.index].categoryId!, //category id
+                            categoryId: categoriesList[_tabController!.index]
+                                .categoryId!, //category id
                             page: 0, // start from page 0
                             foodName: text, //the change value from text field
                             order: Sorting.mostPopular, //sort by most popular
                           ));
                       FoodsManagerCubit.getFoodsEvent(mostSeenContext!,
                           foodGetParams: FoodsGetParamsModel(
-                            categoryId: categoriesList[_tabController!.index].categoryId!,
+                            categoryId: categoriesList[_tabController!.index]
+                                .categoryId!,
                             page: 0, // start from page 0
                             foodName: text, //the change value from text field
                             order: Sorting.mostWatched, //sort by most seen
@@ -102,11 +114,14 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                     onFilterPressed: () {
                       showModalBottomSheet(
                         context: context,
-                        isScrollControlled: true, //set bottom sheet to full height
-                        backgroundColor: ColorsManager.transparent, //bottom sheet background color is transparent
-                        builder: (context) => const CustomBottomSheet(// stateful custom widget
+                        isScrollControlled:
+                            true, //set bottom sheet to full height
+                        backgroundColor: ColorsManager
+                            .transparent, //bottom sheet background color is transparent
+                        builder: (context) =>
+                            const CustomBottomSheet(// stateful custom widget
 
-                            ),
+                                ),
                       );
                     },
                   ),
@@ -119,11 +134,14 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                         controller: _tabController,
                         unselectedLabelColor: ColorsManager.black,
                         labelColor: ColorsManager.maximumPurple,
-                        labelStyle: getSemiBoldStyle(fontSize: AppWidth.s14 * Constants.width),
-                        unselectedLabelStyle:
-                            getMediumStyle(color: ColorsManager.black, fontSize: AppWidth.s14 * Constants.width),
+                        labelStyle: getSemiBoldStyle(
+                            fontSize: AppWidth.s14 * Constants.width),
+                        unselectedLabelStyle: getMediumStyle(
+                            color: ColorsManager.black,
+                            fontSize: AppWidth.s14 * Constants.width),
                         physics: const BouncingScrollPhysics(),
-                        indicator: CircleTabIndicator(color: ColorsManager.maximumPurple, radius: 3),
+                        indicator: CircleTabIndicator(
+                            color: ColorsManager.maximumPurple, radius: 3),
                         isScrollable: true,
                         tabs: categoriesList
                             .map((e) => Tab(
@@ -163,17 +181,20 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: Constants.margin),
                 child: SectionName(
-                  title: AppStrings.mostPopular,
-                  subtitle: AppStrings.seeAll,
+                  title: AppStrings.translate(AppStrings.mostPopular),
+                  subtitle: AppStrings.translate(AppStrings.seeAll),
                   onTap: () {
-                    Navigator.of(context).push(RouteGenerator.pageFadeTransition(
+                    Navigator.of(context)
+                        .push(RouteGenerator.pageFadeTransition(
                       widget: BlocProvider.value(
-                        value: BlocProvider.of<FoodsManagerCubit>(mostPopularContext!),
+                        value: BlocProvider.of<FoodsManagerCubit>(
+                            mostPopularContext!),
                         child: SeeAllScreen(),
                       ),
                       routeSettings: RouteSettings(arguments: {
                         SeeAllScreen.categoryName: e,
-                        SeeAllScreen.sectionName: AppStrings.mostPopular,
+                        SeeAllScreen.sectionName:
+                            AppStrings.translate(AppStrings.mostPopular),
                       }),
                     ));
                   },
@@ -196,7 +217,8 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                     listener: (context, state) {},
                     builder: (context, foodsState) {
                       mostPopularContext = context;
-                      debugPrint('fooooooooooooood state is ${foodsState.runtimeType}');
+                      debugPrint(
+                          'fooooooooooooood state is ${foodsState.runtimeType}');
                       if (foodsState is FoodsLoadedState ||
                           foodsState is LoadingMoreFoodsState ||
                           foodsState is AllFoodAreLoaded) {
@@ -222,10 +244,13 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                           child: NotificationListener(
                               onNotification: (notification) {
                                 if (notification is ScrollEndNotification) {
-                                  if (notification.metrics.maxScrollExtent - notification.metrics.extentBefore < 600) {
+                                  if (notification.metrics.maxScrollExtent -
+                                          notification.metrics.extentBefore <
+                                      600) {
                                     //load more from server
                                     debugPrint('load more from server');
-                                    FoodsManagerCubit.getMoreFoodsEvent(context);
+                                    FoodsManagerCubit.getMoreFoodsEvent(
+                                        context);
                                   }
                                 }
                                 return true;
@@ -235,8 +260,12 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                                   itemBuilder: (index) {
                                     return Padding(
                                       padding: EdgeInsets.only(
-                                        left: index == 0 ? Constants.margin : AppWidth.s12 * Constants.width,
-                                        right: index + 1 == foods.length ? Constants.margin : 0,
+                                        left: index == 0
+                                            ? Constants.margin
+                                            : AppWidth.s12 * Constants.width,
+                                        right: index + 1 == foods.length
+                                            ? Constants.margin
+                                            : 0,
                                       ),
                                       child: Row(
                                         // set widgets horizontally
@@ -244,28 +273,44 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                                           FoodItem(
                                             food: foods[index],
                                             isLoaded: true,
-                                            width: AppWidth.s200 * Constants.width,
+                                            width:
+                                                AppWidth.s200 * Constants.width,
                                             onTap: () {
-                                              Navigator.pushNamed(context, Routes.foodDetailsRoute, arguments: {
-                                                FoodDetailsScreen.foodIdKey: foods[index].foodId,
-                                                FoodDetailsScreen.providerIdKey: foods[index].userId
-                                              });
+                                              Navigator.pushNamed(context,
+                                                  Routes.foodDetailsRoute,
+                                                  arguments: {
+                                                    FoodDetailsScreen.foodIdKey:
+                                                        foods[index].foodId,
+                                                    FoodDetailsScreen
+                                                            .providerIdKey:
+                                                        foods[index].userId
+                                                  });
                                             },
                                             onFavouriteBtnPressed: (value) {
                                               setState(() {
-                                                FoodModel.all[index].isFavorited = value;
+                                                FoodModel.all[index]
+                                                    .isFavorited = value;
                                               });
                                             },
                                           ),
-                                          if (foodsState is LoadingMoreFoodsState && index + 1 == foods.length)
+                                          if (foodsState
+                                                  is LoadingMoreFoodsState &&
+                                              index + 1 == foods.length)
                                             Padding(
-                                              padding: EdgeInsets.symmetric(vertical: AppHeight.s20 * Constants.height),
-                                              child: CustomCircularProgressbar(radius: AppWidth.s12 * Constants.width),
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: AppHeight.s20 *
+                                                      Constants.height),
+                                              child: CustomCircularProgressbar(
+                                                  radius: AppWidth.s12 *
+                                                      Constants.width),
                                             ),
-                                          if (foodsState is AllFoodAreLoaded && index + 1 == foods.length)
+                                          if (foodsState is AllFoodAreLoaded &&
+                                              index + 1 == foods.length)
                                             Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: Constants.margin),
-                                              child: Text('All foods Are Loaded'),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: Constants.margin),
+                                              child:
+                                                  Text('All foods Are Loaded'),
                                             ),
                                         ],
                                       ),
@@ -279,7 +324,9 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                           itemCount: 2,
                           itemBuilder: (index) => Padding(
                             padding: EdgeInsets.only(
-                              left: index == 0 ? Constants.margin : AppWidth.s12 * Constants.width,
+                              left: index == 0
+                                  ? Constants.margin
+                                  : AppWidth.s12 * Constants.width,
                               right: index + 1 == 2 ? Constants.margin : 0,
                             ),
                             child: FoodItem(
@@ -310,11 +357,15 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
               BlocProvider(
                   create: (context) => di.getIt<FoodsManagerCubit>()
                     ..getFoods(
-                        foodGetParams: FoodsGetParamsModel(categoryId: e.categoryId!, page: 0, order: Sorting.mostWatched)),
+                        foodGetParams: FoodsGetParamsModel(
+                            categoryId: e.categoryId!,
+                            page: 0,
+                            order: Sorting.mostWatched)),
                   child: BlocConsumer<FoodsManagerCubit, FoodsManagerState>(
                     listener: (context, state) {
                       debugPrint(state.runtimeType.toString());
-                      if (state is FoodsLoadedState && loadingMoreMostSeenFoods) {
+                      if (state is FoodsLoadedState &&
+                          loadingMoreMostSeenFoods) {
                         debugPrint('rebuild  ==>         ${e.categoryName}');
                         mostSeenFoods.addAll(state.foods);
                         debugPrint(state.foods.length.toString());
@@ -328,9 +379,11 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                       }
                     },
                     builder: (context, foodsState) {
-                      debugPrint('fooooooooooooood state is ${foodsState.runtimeType}');
+                      debugPrint(
+                          'fooooooooooooood state is ${foodsState.runtimeType}');
                       mostSeenContext = context;
-                      if (foodsState is FoodsLoadedState && mostSeenFoods.isEmpty) {
+                      if (foodsState is FoodsLoadedState &&
+                          mostSeenFoods.isEmpty) {
                         return SizedBox(
                             height: AppHeight.s200 * Constants.height,
                             width: AppWidth.s200 * Constants.width,
@@ -343,57 +396,87 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
                           child: NotificationListener(
                               onNotification: (notification) {
                                 if (notification is ScrollEndNotification) {
-                                  if (notification.metrics.maxScrollExtent - notification.metrics.extentBefore < 600) {
+                                  if (notification.metrics.maxScrollExtent -
+                                          notification.metrics.extentBefore <
+                                      600) {
                                     //load more from server
                                     debugPrint('load more from server');
-                                    FoodsManagerCubit.getMoreFoodsEvent(context);
+                                    FoodsManagerCubit.getMoreFoodsEvent(
+                                        context);
                                   }
                                 }
                                 return true;
                               },
                               child: HorizontalListView(
-                                  itemCount:
-                                      foodsState is FoodsLoadedState ? (mostSeenFoods.isNotEmpty ? mostSeenFoods.length : 1) : 2,
+                                  itemCount: foodsState is FoodsLoadedState
+                                      ? (mostSeenFoods.isNotEmpty
+                                          ? mostSeenFoods.length
+                                          : 1)
+                                      : 2,
                                   itemBuilder: (index) {
-                                    if (foodsState is FoodsLoadedState && mostSeenFoods.isEmpty) {
+                                    if (foodsState is FoodsLoadedState &&
+                                        mostSeenFoods.isEmpty) {
                                       return SizedBox(
-                                          height: AppHeight.s200 * Constants.height,
-                                          width: AppWidth.s200 * Constants.width,
-                                          child: Lottie.asset(AssetsManager.empty));
+                                          height:
+                                              AppHeight.s200 * Constants.height,
+                                          width:
+                                              AppWidth.s200 * Constants.width,
+                                          child: Lottie.asset(
+                                              AssetsManager.empty));
                                     }
                                     return Padding(
                                       padding: EdgeInsets.only(
-                                        left: index == 0 ? Constants.margin : AppWidth.s12 * Constants.width,
-                                        right: index + 1 == mostSeenFoods.length ? Constants.margin : 0,
+                                        left: index == 0
+                                            ? Constants.margin
+                                            : AppWidth.s12 * Constants.width,
+                                        right: index + 1 == mostSeenFoods.length
+                                            ? Constants.margin
+                                            : 0,
                                       ),
                                       child: Row(
                                         // set widgets horizontally
                                         children: [
                                           FoodItem(
-                                            food: foodsState is FoodsLoadedState ? mostSeenFoods[index] : null,
-                                            isLoaded: foodsState is FoodsLoadedState,
-                                            width: AppWidth.s252 * Constants.width,
+                                            food: foodsState is FoodsLoadedState
+                                                ? mostSeenFoods[index]
+                                                : null,
+                                            isLoaded:
+                                                foodsState is FoodsLoadedState,
+                                            width:
+                                                AppWidth.s252 * Constants.width,
                                             onTap: () {
                                               //  FoodManagerCubit.getFoodByIdEvent(context, foods![index].foodId!);
 
                                               // CookFoodsManagerCubit.getCookFoodsEvent(context,
                                               //     cookGetParams: CookGetParamsModel(providerId: foods![index].userId!));
-                                              Navigator.pushNamed(context, Routes.foodDetailsRoute, arguments: {
-                                                FoodDetailsScreen.foodIdKey: mostSeenFoods[index].foodId,
-                                                FoodDetailsScreen.providerIdKey: mostSeenFoods[index].userId
-                                              });
+                                              Navigator.pushNamed(context,
+                                                  Routes.foodDetailsRoute,
+                                                  arguments: {
+                                                    FoodDetailsScreen.foodIdKey:
+                                                        mostSeenFoods[index]
+                                                            .foodId,
+                                                    FoodDetailsScreen
+                                                            .providerIdKey:
+                                                        mostSeenFoods[index]
+                                                            .userId
+                                                  });
                                             },
                                             onFavouriteBtnPressed: (value) {
                                               setState(() {
-                                                FoodModel.all[index].isFavorited = value;
+                                                FoodModel.all[index]
+                                                    .isFavorited = value;
                                               });
                                             },
                                           ),
-                                          if (foodsState is LoadingMoreFoodsState && index + 1 == mostSeenFoods.length)
+                                          if (foodsState
+                                                  is LoadingMoreFoodsState &&
+                                              index + 1 == mostSeenFoods.length)
                                             Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: Constants.margin),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: Constants.margin),
                                               child: CustomCircularProgressbar(
-                                                radius: AppWidth.s12 * Constants.width,
+                                                radius: AppWidth.s12 *
+                                                    Constants.width,
                                               ),
                                             )
                                         ],
@@ -425,7 +508,8 @@ class _CategoryScreenState extends State<CategoryScreen> with TickerProviderStat
 class CircleTabIndicator extends Decoration {
   final BoxPainter _painter;
 
-  CircleTabIndicator({required Color color, required double radius}) : _painter = _CirclePainter(color, radius);
+  CircleTabIndicator({required Color color, required double radius})
+      : _painter = _CirclePainter(color, radius);
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) => _painter;
@@ -442,7 +526,8 @@ class _CirclePainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration cfg) {
-    final Offset circleOffset = offset + Offset(cfg.size!.width / 2, cfg.size!.height - radius);
+    final Offset circleOffset =
+        offset + Offset(cfg.size!.width / 2, cfg.size!.height - radius);
     canvas.drawCircle(circleOffset, radius, _paint);
   }
 }

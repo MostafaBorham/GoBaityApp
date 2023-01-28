@@ -24,7 +24,7 @@ class MyCurrentLocationDetails extends StatelessWidget {
       child: Column(//set widgets vertically
         children: [
           AutoSizeText(
-            AppStrings.useMyCurrentLocation,
+      AppStrings.translate(AppStrings.useMyCurrentLocation),
             maxLines: 1,
             style: getMediumStyle(
               color: ColorsManager.davysGrey,

@@ -30,7 +30,7 @@ class _CartScreenState extends State<CartScreen> with TickerProviderStateMixin {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: AppStrings.myBag,
+        title: AppStrings.translate(AppStrings.myBag),
         showBackgroundImage: true,
       ),
       bottomSheet: BottomSheet(

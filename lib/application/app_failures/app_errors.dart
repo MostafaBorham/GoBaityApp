@@ -1,3 +1,5 @@
+import 'package:yallabaity/presentation/resources/strings_manager.dart';
+
 enum AppErrors {
   noErrors,
   images,
@@ -20,21 +22,21 @@ enum AppErrors {
 
 }
 
-const Map<AppErrors, String> appErrorMessages = {
+ Map<AppErrors, String> appErrorMessages = {
   AppErrors.noErrors: '',
-  AppErrors.street: 'street is required',
-  AppErrors.buildingName: 'building Name is required',
-  AppErrors.floor: 'floor is required',
-  AppErrors.apartmentNumber: 'apartment Number is required',
-  AppErrors.images: 'at least provide one image',
-  AppErrors.title: 'title is required',
-  AppErrors.description: 'description is required',
-  AppErrors.tags: 'tags is required',
-  AppErrors.price: 'price is required',
-  AppErrors.name: 'name is required',
-  AppErrors.phoneInvalid: 'invalid phone number',
-  AppErrors.phoneEmpty: 'phone is required',
-  AppErrors.password: 'password must be at least 8 digits',
-  AppErrors.pinCodeEmpty: 'Please Enter Sent Code',
-  AppErrors.pinCodeInvalid: 'Pin Code must be 4 numbers',
+  AppErrors.street: AppStrings.translate(AppStrings.streetError),
+  AppErrors.buildingName: AppStrings.translate(AppStrings.buildingNameError),
+  AppErrors.floor: AppStrings.translate(AppStrings.floorError),
+  AppErrors.apartmentNumber: AppStrings.translate(AppStrings.apartmentNumberError),
+  AppErrors.images: AppStrings.translate(AppStrings.imageError),
+  AppErrors.title: AppStrings.translate(AppStrings.titleError),
+  AppErrors.description: AppStrings.translate(AppStrings.descriptionError),
+  AppErrors.tags: AppStrings.translate(AppStrings.tagsError),
+  AppErrors.price: AppStrings.translate(AppStrings.priceError),
+  AppErrors.name: AppStrings.translate(AppStrings.nameError),
+  AppErrors.phoneInvalid: AppStrings.translate(AppStrings.invalidPhoneError),
+  AppErrors.phoneEmpty: AppStrings.translate(AppStrings.phoneError),
+  AppErrors.password: AppStrings.translate(AppStrings.invalidPasswordError),
+  AppErrors.pinCodeEmpty: AppStrings.translate(AppStrings.sentCodeError),
+  AppErrors.pinCodeInvalid: AppStrings.translate(AppStrings.invalidPinCodeError),
 };

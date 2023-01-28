@@ -32,7 +32,8 @@ class VerificationScreen extends StatelessWidget {
   VerificationScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic>? arguments = (ModalRoute.of(context))!.settings.arguments as Map<String, dynamic>?;
+    Map<String, dynamic>? arguments =
+        (ModalRoute.of(context))!.settings.arguments as Map<String, dynamic>?;
     if (arguments != null) {
       user = arguments[userInfo] as UserModel;
       userLoggedInOrRegister = arguments[userLoginOrRegister];
@@ -53,14 +54,14 @@ class VerificationScreen extends StatelessWidget {
               Navigator.pushNamed(context, Routes.homeRoute);
             }
 
-           debugPrint(state.runtimeType.toString());
+            debugPrint(state.runtimeType.toString());
             if (state is UserRegisteredState) {
               Navigator.pop(dialogContext!);
 
               Navigator.pushNamed(context, Routes.clientLocationRoute);
             }
             if (state is RegisteringUserFailedState) {
-             debugPrint(state.message);
+              debugPrint(state.message);
             }
           },
           builder: (context, state) {
@@ -72,41 +73,47 @@ class VerificationScreen extends StatelessWidget {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Column(//set widgets vertically
+                  child: Column(
+                    //set widgets vertically
                     children: [
                       SizedBox(
                         height: AppHeight.s31 * Constants.height,
                       ),
                       CustomTitle(
-                        text: AppStrings.verification,
+                        text: AppStrings.translate(AppStrings.verification),
                       ),
                       SizedBox(
                         height: AppHeight.s10 * Constants.height,
                       ),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: AppWidth.s33 * Constants.width),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: AppWidth.s33 * Constants.width),
                         child: CustomRichText(
-                          text: '${AppStrings.enterVerificationCode}${user!.phone}. ',
+                          text:
+                              '${AppStrings.translate(AppStrings.enterVerificationCode)}${user!.phone}. ',
                           textBtnColor: ColorsManager.maximumPurple,
-                          btnText: AppStrings.reEnterNumberAgain,
+                          btnText: AppStrings.translate(
+                              AppStrings.reEnterNumberAgain),
                           onPressed: () => Navigator.of(context).pop(),
                         ),
                       ),
                       SizedBox(
                         height: AppHeight.s40 * Constants.height,
                       ),
-                      Column(//set widgets vertically
+                      Column(
+                        //set widgets vertically
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: AppWidth.s33 * Constants.width),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: AppWidth.s33 * Constants.width),
                             child: _buildInputFormField(),
                           ),
                           SizedBox(
                             height: AppHeight.s27 * Constants.height,
                           ),
                           CustomRichText(
-                            text: AppStrings.didntGetCode,
-                            btnText: AppStrings.resend,
+                            text: AppStrings.translate(AppStrings.didntGetCode),
+                            btnText: AppStrings.translate(AppStrings.resend),
                             textBtnColor: ColorsManager.maximumPurple,
                           ),
                           SizedBox(
@@ -114,7 +121,9 @@ class VerificationScreen extends StatelessWidget {
                           ),
                           Text(
                             '00:15',
-                            style: getSemiBoldStyle(fontSize: AppWidth.s20 * Constants.width, color: ColorsManager.eerieBlack),
+                            style: getSemiBoldStyle(
+                                fontSize: AppWidth.s20 * Constants.width,
+                                color: ColorsManager.eerieBlack),
                           )
                         ],
                       ),
@@ -131,37 +140,51 @@ class VerificationScreen extends StatelessWidget {
 
   _buildInputFormField() => BlocBuilder<ErrorsManagerCubit, ErrorsManagerState>(
         builder: (context, state) {
-         debugPrint('rebuild');
+          debugPrint('rebuild');
           return Form(
             key: formKey,
-            child: Column(//set widgets vertically
+            child: Column(
+              //set widgets vertically
               children: [
                 CustomPinCodeTextField(
                   alignment: Alignment.center,
-                  showError: ErrorsManagerCubit.contains(context, AppErrors.pinCodeEmpty) ||
-                      ErrorsManagerCubit.contains(context, AppErrors.pinCodeInvalid),
-                  message: ErrorsManagerCubit.contains(context, AppErrors.pinCodeEmpty)
-                      ? ErrorsManagerCubit.getErrorMessage(context, AppErrors.pinCodeEmpty)
-                      : ErrorsManagerCubit.contains(context, AppErrors.pinCodeInvalid)
-                          ? ErrorsManagerCubit.getErrorMessage(context, AppErrors.pinCodeInvalid)
+                  showError: ErrorsManagerCubit.contains(
+                          context, AppErrors.pinCodeEmpty) ||
+                      ErrorsManagerCubit.contains(
+                          context, AppErrors.pinCodeInvalid),
+                  message: ErrorsManagerCubit.contains(
+                          context, AppErrors.pinCodeEmpty)
+                      ? ErrorsManagerCubit.getErrorMessage(
+                          context, AppErrors.pinCodeEmpty)
+                      : ErrorsManagerCubit.contains(
+                              context, AppErrors.pinCodeInvalid)
+                          ? ErrorsManagerCubit.getErrorMessage(
+                              context, AppErrors.pinCodeInvalid)
                           : null,
                   onSaved: (text) {
                     if (text!.isEmpty) {
-                      ErrorsManagerCubit.addErrorType(context, AppErrors.pinCodeEmpty);
+                      ErrorsManagerCubit.addErrorType(
+                          context, AppErrors.pinCodeEmpty);
                       return;
-                    } else if (text.length < Constants.pinCodeNumberOfDigits) {
-                      ErrorsManagerCubit.addErrorType(context, AppErrors.pinCodeInvalid);
+                    } else if (text.length < Constants.pinCodeNumberOfDigits || text!=) {
+                      ErrorsManagerCubit.addErrorType(
+                          context, AppErrors.pinCodeInvalid);
                       return;
                     }
                     pinCode = text;
                   },
                   onChanged: (text) {
-                   debugPrint('change');
-                    if (ErrorsManagerCubit.contains(context, AppErrors.pinCodeEmpty)) {
-                      ErrorsManagerCubit.removeError(context, AppErrors.pinCodeEmpty);
+                    debugPrint('change');
+                    if (ErrorsManagerCubit.contains(
+                        context, AppErrors.pinCodeEmpty)) {
+                      ErrorsManagerCubit.removeError(
+                          context, AppErrors.pinCodeEmpty);
                     }
-                    if (text.length == 4 && ErrorsManagerCubit.contains(context, AppErrors.pinCodeInvalid)) {
-                      ErrorsManagerCubit.removeError(context, AppErrors.pinCodeInvalid);
+                    if (text.length == 4 &&
+                        ErrorsManagerCubit.contains(
+                            context, AppErrors.pinCodeInvalid)) {
+                      ErrorsManagerCubit.removeError(
+                          context, AppErrors.pinCodeInvalid);
                     }
                   },
                 ),
@@ -173,7 +196,7 @@ class VerificationScreen extends StatelessWidget {
                   child: SizedBox(
                     width: double.maxFinite,
                     child: CustomButton(
-                      text: AppStrings.submit,
+                      text: AppStrings.translate(AppStrings.submit),
                       onPressed: () {
                         _onSubmitPressed(context);
                       },
@@ -188,10 +211,10 @@ class VerificationScreen extends StatelessWidget {
 
   void _onSubmitPressed(BuildContext context) {
     formKey.currentState!.save();
-    if (userLoggedInOrRegister == AppStrings.login) {
+    if (userLoggedInOrRegister == AppStrings.translate(AppStrings.login)) {
       debugPrint('login process');
-      UserCubit.loginUserEvent(context: context, phone: user!.phone!, password: user!.password!);
-
+      UserCubit.loginUserEvent(
+          context: context, phone: user!.phone!, password: user!.password!);
     } else {
       debugPrint('register process');
 

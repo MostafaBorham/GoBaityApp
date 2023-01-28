@@ -1,9 +1,11 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yallabaity/presentation/resources/assets_manager.dart';
 import 'package:yallabaity/presentation/resources/colors_manager.dart';
 import 'package:yallabaity/presentation/resources/constants_manager.dart';
 import 'package:yallabaity/presentation/resources/routes_manager.dart';
+import 'package:yallabaity/presentation/resources/strings_manager.dart';
 import 'package:yallabaity/presentation/resources/styles_manager.dart';
 import 'package:yallabaity/presentation/resources/values_manager.dart';
 import 'package:yallabaity/presentation/pages/cart_screen.dart';
@@ -18,86 +20,91 @@ class ClientProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LinearGradientBody(
-      appbarTitle: 'My Profile',
+      appbarTitle: AppStrings.translate(AppStrings.myProfile),
       onBackPressed: () {
         Navigator.of(context).pop();
-      },onCartPressed: () {
-        Get.to(()=>CartScreen());
+      },
+      onCartPressed: () {
+        Get.to(() => CartScreen());
       },
       child: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppWidth.s31*Constants.width),
+          padding:
+              EdgeInsets.symmetric(horizontal: AppWidth.s31 * Constants.width),
           child: GestureDetector(
-            child: Column(//set widgets vertically
+            child: Column(
+              //set widgets vertically
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: AppHeight.s30*Constants.height,
+                  height: AppHeight.s30 * Constants.height,
                 ),
                 Text(
                   'Mohamed Ghitany',
                   style: getSemiBoldStyle(
-                      fontSize: AppWidth.s18*Constants.width,
+                      fontSize: AppWidth.s18 * Constants.width,
                       color: ColorsManager.maximumPurple),
                 ),
                 SizedBox(
-                  height: AppHeight.s4*Constants.height,
+                  height: AppHeight.s4 * Constants.height,
                 ),
                 Text(
                   '0107 387 3899',
                   style: getSemiBoldStyle(
-                      fontSize: AppWidth.s14*Constants.width,
+                      fontSize: AppWidth.s14 * Constants.width,
                       color: ColorsManager.maximumPurple.withOpacity(0.71)),
                 ),
                 SizedBox(
-                  height: AppHeight.s37*Constants.height,
+                  height: AppHeight.s37 * Constants.height,
                 ),
                 Text(
                   '30.00 EGP',
                   style: getSemiBoldStyle(
-                      fontSize: AppWidth.s18*Constants.width,
+                      fontSize: AppWidth.s18 * Constants.width,
                       color: ColorsManager.maximumPurple),
                 ),
                 SizedBox(
-                  height: AppHeight.s54*Constants.height,
+                  height: AppHeight.s54 * Constants.height,
                 ),
                 CustomTileButton(
-                  text: 'Orders History',
+                  text: AppStrings.translate(AppStrings.ordersHistory),
                   suffixAsset: AssetsManager.arrow,
                   onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(Routes.ordersHistoryRoute);
+                    Navigator.of(context).pushNamed(Routes.ordersHistoryRoute);
                   },
                 ),
                 SizedBox(
-                  height: AppHeight.s18*Constants.height,
+                  height: AppHeight.s18 * Constants.height,
                 ),
                 CustomTileButton(
-                  text: 'Saved Items',
+                  text: AppStrings.translate(AppStrings.savedItems),
                   suffixAsset: AssetsManager.arrow,
                   onTap: () {
                     Navigator.of(context).pushNamed(Routes.savedRoute);
                   },
                 ),
                 SizedBox(
-                  height: AppHeight.s18*Constants.height,
+                  height: AppHeight.s18 * Constants.height,
                 ),
                 CustomTileButton(
-                  text: 'Account Info',
+                  text: AppStrings.translate(AppStrings.accountInfo),
                   suffixAsset: AssetsManager.arrow,
                   onTap: () {
                     Navigator.of(context).pushNamed(Routes.accountInfoRoute);
                   },
                 ),
                 SizedBox(
-                  height: AppHeight.s18*Constants.height,
+                  height: AppHeight.s18 * Constants.height,
                 ),
                 CustomTileButton(
-                  text: 'Language',
+                  text: AppStrings.translate(AppStrings.languageTitle),
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.accountInfoRoute);
+                  },
                   suffix: Text(
-                    'English',
+                    AppStrings.translate(AppStrings.language),
                     style: getSemiBoldStyle(
-                      fontSize: AppWidth.s14*Constants.width,
+                      fontSize: AppWidth.s14 * Constants.width,
                       color: ColorsManager.pixiePowder,
                       textDecoration: TextDecoration.underline,
                     ),
@@ -105,12 +112,12 @@ class ClientProfileScreen extends StatelessWidget {
                   suffixAsset: AssetsManager.arrow,
                 ),
                 SizedBox(
-                  height: AppHeight.s100*Constants.height,
+                  height: AppHeight.s100 * Constants.height,
                 ),
                 SizedBox(
                   width: double.maxFinite,
                   child: CustomButton(
-                    text: 'Log out',
+                    text: AppStrings.translate(AppStrings.logout),
                     outlined: true,
                     onPressed: () {
                       Navigator.of(context)

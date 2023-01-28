@@ -13,8 +13,8 @@ import 'package:yallabaity/presentation/widgets/custom_title.dart';
 import 'package:yallabaity/presentation/widgets/phone_textfield.dart';
 import 'package:yallabaity/presentation/resources/routes_manager.dart';
 
-class ProviderApplyScreen extends StatelessWidget {
-  const ProviderApplyScreen({Key? key}) : super(key: key);
+class CookApplyScreen extends StatelessWidget {
+  const CookApplyScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

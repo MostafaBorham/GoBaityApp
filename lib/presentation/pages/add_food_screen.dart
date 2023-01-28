@@ -69,7 +69,7 @@ class AddFoodScreen extends StatelessWidget {
         appBar: CustomAppBar(
           backgroundColor: ColorsManager.maximumPurple,
           showBackgroundImage: true,
-          title: AppStrings.postFood,
+          title: AppStrings.translate(AppStrings.postFood),
         ),
         body: MultiBlocProvider(
           providers: [
@@ -93,7 +93,7 @@ class AddFoodScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(height: AppHeight.s20 * Constants.height),
-                            const SectionName(title: AppStrings.info),
+                             SectionName(title: AppStrings.translate(AppStrings.info)),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: AppWidth.s10 * Constants.width),
                               child: _buildTitle(context),
@@ -153,7 +153,7 @@ class AddFoodScreen extends StatelessWidget {
                             SizedBox(
                               height: AppHeight.s23 * Constants.height,
                             ),
-                            const SectionName(title: AppStrings.sizes),
+                             SectionName(title: AppStrings.translate(AppStrings.sizes)),
                             SizedBox(
                               height: AppHeight.s24 * Constants.height,
                             ),
@@ -196,7 +196,7 @@ class AddFoodScreen extends StatelessWidget {
                                   },
                                   builder: (context, state) {
                                     return CustomButton(
-                                        text: AppStrings.confirm.capitalizeFirst!,
+                                        text: AppStrings.translate(AppStrings.confirm.capitalizeFirst!),
                                         onPressed: () {
                                           uploadFood(context);
                                         });
@@ -239,7 +239,7 @@ class AddFoodScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              AppStrings.addPhotos.capitalizeFirst!,
+              AppStrings.translate(AppStrings.addPhotos.capitalizeFirst!),
               style: getSemiBoldStyle(color: ColorsManager.maximumPurple, fontSize: AppWidth.s16 * Constants.width),
             ),
             SvgPicture.asset(
@@ -251,7 +251,7 @@ class AddFoodScreen extends StatelessWidget {
       );
 
   _buildTitle(BuildContext context) => CustomTextField(
-      hintText: AppStrings.title.capitalizeFirst,
+      hintText: AppStrings.translate(AppStrings.title.capitalizeFirst!),
       validator: (text) {
         if (text.isNullOrEmpty) {
           ErrorsManagerCubit.addErrorType(context, AppErrors.title); // title must provided
@@ -271,7 +271,7 @@ class AddFoodScreen extends StatelessWidget {
       message: ErrorsManagerCubit.getErrorMessage(context, AppErrors.title));
 
   _buildDescription(BuildContext context) => CustomTextField(
-        hintText: AppStrings.description.capitalizeFirst,
+        hintText: AppStrings.translate(AppStrings.description.capitalizeFirst!),
         maxLines: 3,
         validator: (description) {
           if (description.isNullOrEmpty) {
@@ -353,7 +353,7 @@ class AddFoodScreen extends StatelessWidget {
       });
 
   _buildAddFoodSize(BuildContext context, sizesFromServerState) => CustomTileButton(
-        text: AppStrings.addFood,
+        text: AppStrings.translate(AppStrings.addFood),
         suffixAsset: AssetsManager.add,
         onTap: () {
           if (sizesFromServerState is LoadedSizesState) {
@@ -450,7 +450,7 @@ class AddFoodScreen extends StatelessWidget {
           }
 
           return CustomDropDown(
-            text: AppStrings.addCategories,
+            text: AppStrings.translate(AppStrings.addCategories),
             items: items,
             isLoaded: state is CategoriesLoadedState,
             selectedTags: (List<ItemModel> selected) {

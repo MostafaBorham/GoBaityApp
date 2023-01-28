@@ -22,43 +22,47 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: AppWidth.s70*Constants.width),
+      padding: EdgeInsets.only(right: AppWidth.s70 * Constants.width),
       child: Drawer(
         width: double.maxFinite,
-        child: Column(//set widgets vertically
+        child: Column(
+          //set widgets vertically
           children: [
             DrawerHeaderWidget(),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(
-                  top: AppHeight.s40*Constants.height,
-                  left: AppWidth.s41*Constants.width,
-                  right: AppWidth.s41*Constants.width,
+                  top: AppHeight.s40 * Constants.height,
+                  left: AppWidth.s41 * Constants.width,
+                  right: AppWidth.s41 * Constants.width,
                 ),
                 child: ListView.builder(
                   itemCount: DrawerItems.all.length,
                   itemBuilder: (context, index) {
-                    if ( DrawerItems.all[index].title == DrawerItems.addFood.title) {
+                    if (DrawerItems.all[index].title ==
+                        DrawerItems.addFood.title) {
                       return Padding(
-                        padding: EdgeInsets.only(bottom: AppHeight.s15*Constants.height),
+                        padding: EdgeInsets.only(
+                            bottom: AppHeight.s15 * Constants.height),
                         child: Container(
                           decoration: BoxDecoration(
                               color: ColorsManager.white,
                               borderRadius: BorderRadius.circular(14),
                               boxShadow: [
                                 BoxShadow(
-                                    color: ColorsManager.black.withOpacity(0.07),
+                                    color:
+                                        ColorsManager.black.withOpacity(0.07),
                                     blurRadius: 15,
                                     spreadRadius: 1)
                               ]),
                           child: ListTile(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: AppWidth.s27*Constants.width),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: AppWidth.s27 * Constants.width),
                             title: Text(
-                              AppStrings.addFood,
+                              AppStrings.translate(AppStrings.addFood),
                               style: getSemiBoldStyle(
                                   color: ColorsManager.maximumPurple,
-                                  fontSize: AppWidth.s17*Constants.width),
+                                  fontSize: AppWidth.s17 * Constants.width),
                             ),
                             trailing: SvgPicture.asset(
                               AssetsManager.add,
@@ -77,10 +81,10 @@ class CustomDrawer extends StatelessWidget {
                           color: ColorsManager.maximumPurple,
                         ),
                         title: Text(
-                          DrawerItems.all[index].title,
+                          AppStrings.translate(DrawerItems.all[index].title),
                           style: getSemiBoldStyle(
                             color: ColorsManager.chineseBlack,
-                            fontSize: AppWidth.s17*Constants.width,
+                            fontSize: AppWidth.s17 * Constants.width,
                           ),
                         ),
                         selectedColor: ColorsManager.cultured,

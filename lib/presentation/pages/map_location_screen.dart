@@ -18,7 +18,9 @@ import 'package:yallabaity/presentation/widgets/custom_button.dart';
 import 'package:yallabaity/presentation/widgets/custom_dialog.dart';
 import 'package:yallabaity/presentation/widgets/search.dart';
 import '../manager/cubit_user_manager/cubit_user.dart';
+import '../manager/google_apis_cubit_manager/google_apis_manager_cubit.dart';
 import '../resources/assets_manager.dart';
+import '../widgets/my_location_item.dart';
 import 'address_details.dart';
 
 class ClientLocationScreen extends StatelessWidget {
@@ -64,7 +66,6 @@ class ClientLocationScreen extends StatelessWidget {
                         target: egyptLatLang,
                         zoom: 12,
                       ),
-
                     );
                   },
                 ),
@@ -85,12 +86,14 @@ class ClientLocationScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: Constants.margin,
                   ),
-                  child: Column(//set widgets vertically
+                  child: Column(
+                    //set widgets vertically
                     children: [
                       SizedBox(
                         height: AppHeight.s45 * Constants.height,
                       ),
-                      Row(// set widgets horizontally
+                      Row(
+                        // set widgets horizontally
                         children: [
                           CircularIconButton(
                             asset: AssetsManager.back,
@@ -106,7 +109,7 @@ class ClientLocationScreen extends StatelessWidget {
                             width: AppWidth.s13 * Constants.width,
                           ),
                           Text(
-                            AppStrings.addressDetails,
+                            AppStrings.translate(AppStrings.addressDetails),
                             style: getSemiBoldStyle(
                               color: ColorsManager.white,
                               fontSize: AppWidth.s20 * Constants.width,
@@ -117,55 +120,25 @@ class ClientLocationScreen extends StatelessWidget {
                       SizedBox(
                         height: AppHeight.s30 * Constants.height,
                       ),
-                      Search(hintText: AppStrings.searchForAddress),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: AppHeight.s15 * Constants.height),
-                        margin: EdgeInsets.symmetric(horizontal: AppWidth.s27 * Constants.width),
-                        decoration: BoxDecoration(
-                            color: ColorsManager.antiFlashWhite,
-                            borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(AppWidth.s15 * Constants.width),
-                                bottomRight: Radius.circular(AppWidth.s15 * Constants.width))),
-                        child: Row(// set widgets horizontally
-                          children: [
-                            SizedBox(
-                              width: AppWidth.s23 * Constants.width,
-                            ),
-                            DecoratedBox(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: ColorsManager.maximumPurple, width: 1),
-                                  color: ColorsManager.white,
-                                  shape: BoxShape.circle),
-                              child: Padding(
-                                padding: EdgeInsets.all(AppWidth.s3 * Constants.width),
-                                child: CircleAvatar(
-                                  radius: (AppWidth.s12 * Constants.width) / 2,
-                                  backgroundColor: ColorsManager.maximumPurple,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: AppWidth.s15 * Constants.width,
-                            ),
-                            Text(
-                              AppStrings.useMyCurrentLocation,
-                              style: getMediumStyle(fontSize: AppWidth.s13 * Constants.width),
-                            ),
-                          ],
+                      BlocBuilder<GoogleApisManagerCubit, GoogleApisManagerState>(
+                        builder: (context, state) => Search(
+                          hintText: AppStrings.translate(AppStrings.searchForAddress),
+                          onChanged: (place) => GoogleApisManagerCubit.getPlacesEvent(context: context, placeName: place),
                         ),
-                      )
+                      ),
+                      MyLocationItem(),
                     ],
                   ),
                 ),
               ),
               Positioned(
-                  bottom: AppHeight.s33*Constants.height,
+                  bottom: AppHeight.s33 * Constants.height,
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: Constants.margin),
                       child: CustomButton(
-                        text: AppStrings.confirmForDelivery,
+                        text: AppStrings.translate(AppStrings.confirmForDelivery),
                         onPressed: () {
                           UserCubit.updateUserLocationEvent(context, LocationModel(latitude: latitude, longitude: longitude));
                           DialogManagerCubit.changeDialogStateEvent(context);
@@ -191,7 +164,7 @@ class ClientLocationScreen extends StatelessWidget {
                     }
                   },
                   builder: (context, state) {
-                   debugPrint(state.runtimeType.toString());
+                    debugPrint(state.runtimeType.toString());
                     switch (state.runtimeType) {
                       case UpdatingUserLocation:
                         message = (state as UpdatingUserLocation).message;
@@ -206,7 +179,7 @@ class ClientLocationScreen extends StatelessWidget {
                       default:
                         message = '';
                     }
-                   debugPrint(message);
+                    debugPrint(message);
                     return Positioned.fill(
                         child: Align(
                       alignment: Alignment.center,

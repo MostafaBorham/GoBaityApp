@@ -42,13 +42,18 @@ import 'package:yallabaity/presentation/manager/cubit_cooks_managers/cubit_cooks
 import 'package:yallabaity/presentation/manager/cubit_food_operation_manager/cubit_food_operation_manager_cubit.dart';
 import 'package:yallabaity/presentation/manager/cubit_foods/foods_manager_cubit.dart';
 import 'package:yallabaity/presentation/manager/cubit_user_manager/cubit_user.dart';
+import 'package:yallabaity/presentation/manager/google_apis_cubit_manager/google_apis_manager_cubit.dart';
 
+import 'domain/repositories/google_apis_repo.dart';
+import 'domain/use_cases/google_apis_usescases.dart';
 import 'network_layer/data_sources/ads_local_datasource.dart';
 import 'network_layer/data_sources/ads_remote_datasource.dart';
 import 'network_layer/data_sources/cart_local_datasource.dart';
 import 'network_layer/data_sources/cart_remote_datasource.dart';
 import 'network_layer/data_sources/food_sizes_local_datasource.dart';
+import 'network_layer/data_sources/google_apis_remote_datasource.dart';
 import 'network_layer/repositories/cart_repo_impl.dart';
+import 'network_layer/repositories/google_apis_repo_imple.dart';
 import 'presentation/manager/cubit_ads_manager/cubit_ads_manager_cubit.dart';
 import 'presentation/manager/cubit_categories/categories_manager_cubit.dart';
 import 'presentation/manager/cubit_cook_foods_manager/cubit_cook_foods_manager_cubit.dart';
@@ -62,7 +67,6 @@ Future<void> init() async {
 
   /********************* bloc ******************************/
   /*                                       categories cubit                                           */
-
   getIt.registerFactory<CategoriesManagerCubit>(() => CategoriesManagerCubit(categoriesUseCases: getIt()));
   getIt.registerFactory<SizesBloc>(() => SizesBloc(sizesUseCases: getIt()));
   /*                                       foods cubit                                              */
@@ -142,14 +146,22 @@ Future<void> init() async {
       () => CartRepoImpl(cartRemoteDataSource: getIt(), cartLocalDataSource: getIt(), networkStatus: getIt()));
 
   /********************* network ******************************/
-
   getIt.registerLazySingleton(() => http.Client());
   getIt.registerLazySingleton(() => NetworkService(client: getIt()));
   getIt.registerLazySingleton(() => Dio()); /*  core */
   getIt.registerLazySingleton<NetworkStatus>(() => NetworkStatusImpl(checker: getIt()));
   getIt.registerLazySingleton(() => InternetConnectionChecker());
   /********************* local ******************************/
-
   SharedPreferences preferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => preferences);
+  /********************* google apis ******************************/
+
+  /*data source*/
+  getIt.registerLazySingleton<GoogleApisRemoteDataSource>(() => GoogleApisImplWithHttp(networkService: getIt()));
+  /*repo*/
+  getIt.registerLazySingleton<GoogleApisRepo>(() => GoogleApisRepoImpl(googleRemoteDataSource: getIt(), networkStatus: getIt()));
+  /*use case*/
+  getIt.registerLazySingleton<GoogleApisUseCases>(() => GoogleApisUseCases(googleApisRepo: getIt()));
+  /*cubit*/
+  getIt.registerLazySingleton<GoogleApisManagerCubit>(() => GoogleApisManagerCubit(googleApisUseCases: getIt()));
 }

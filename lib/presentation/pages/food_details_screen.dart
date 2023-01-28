@@ -177,7 +177,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> with TickerProvid
                               padding: EdgeInsets.symmetric(horizontal: Constants.margin),
                               child: foodState is FoodLoadedState
                                   ? Text(
-                                      AppStrings.selectSize,
+                                      AppStrings.translate(AppStrings.selectSize),
                                       style: getMediumStyle(
                                           color: ColorsManager.eerieBlack, fontSize: AppWidth.s17 * Constants.width),
                                     )
@@ -246,7 +246,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> with TickerProvid
                                 children: [
                                   foodState is FoodLoadedState
                                       ? AutoSizeText(
-                                          AppStrings.postedBy,
+                                          AppStrings.translate(AppStrings.postedBy),
                                           style: getMediumStyle(color: ColorsManager.graniteGray, fontSize: 14),
                                         )
                                       : ShimmerWidget(
@@ -266,7 +266,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> with TickerProvid
                                   ),
                                   foodState is FoodLoadedState
                                       ? Text(
-                                          '${AppStrings.othersBy} ${foodViewAndOrder!.food!.cookName}',
+                                          '${AppStrings.translate(AppStrings.othersBy)} ${foodViewAndOrder!.food!.cookName}',
                                           style: getMediumStyle(
                                               color: ColorsManager.eerieBlack, fontSize: AppWidth.s17 * Constants.width),
                                         )
@@ -288,7 +288,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> with TickerProvid
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   foodState is FoodLoadedState
-                                      ? Text(AppStrings.topRated,
+                                      ? Text(AppStrings.translate(AppStrings.topRated),
                                           style: getSemiBoldStyle(
                                             color: ColorsManager.eerieBlack,
                                             fontSize: AppWidth.s17 * Constants.width,
@@ -402,7 +402,7 @@ class _FoodDetailsScreenState extends State<FoodDetailsScreen> with TickerProvid
                         },
                         builder: (context, state) => CustomDataButton(
                           count: 1,
-                          text: AppStrings.viewBag,
+                          text: AppStrings.translate(AppStrings.viewBag),
                           suffix: Text(
                             totalPrice.toString(),
                             style: getSemiBoldStyle(fontSize: AppWidth.s16 * Constants.width, color: ColorsManager.white),

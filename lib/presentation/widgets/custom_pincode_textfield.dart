@@ -29,10 +29,8 @@ class CustomPinCodeTextField extends StatelessWidget {
         PinCodeTextField(
           appContext: context,
           length: 4,
-     /*     validator: (value) {
-           debugPrint('vvvvvvvvvvvvvvvvvvvvvv');
-          },*/
-          onCompleted: validator,
+          validator: validator,
+
           onSaved: onSaved,
           onChanged: onChanged,
           keyboardType: TextInputType.number,

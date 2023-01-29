@@ -8,6 +8,7 @@ class AppPrefs {
   static const String prefsUsersKey = 'CACHED_USERS';
   static const String prefsLanguageKey = 'LANGUAGE';
   static const String prefsUsersAddressKey = 'CACHED_USERS_ADDRESS';
+  static const String prefsFavouriteKey = 'CACHED_FAVOURITE';
   static const String prefsLoggedInKey = "IS_LOGGED_IN";
   static const String prefsGetStatedKey = "GET_STARTED";
   static const String citiesKey = "cities";

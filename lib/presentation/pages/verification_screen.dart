@@ -1,7 +1,12 @@
+// ignore_for_file: must_be_immutable
+
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:yallabaity/application/app_failures/app_errors.dart';
+import 'package:yallabaity/application/enums/dialog_types.dart';
+import 'package:yallabaity/network_layer/models/data_models/SendOtpWithPhoneModel.dart';
+import 'package:yallabaity/network_layer/models/data_models/check_otp_model.dart';
 import 'package:yallabaity/network_layer/models/data_models/user_model.dart';
 import 'package:yallabaity/presentation/manager/cubit_errors/errors_manager_cubit.dart';
 import 'package:yallabaity/presentation/resources/colors_manager.dart';
@@ -16,8 +21,6 @@ import 'package:yallabaity/presentation/widgets/custom_subtitle.dart';
 import 'package:yallabaity/presentation/resources/constants_manager.dart';
 import 'package:yallabaity/presentation/widgets/custom_title.dart';
 import 'package:yallabaity/presentation/widgets/custom_button.dart';
-
-import '../../application/app_failures/app_errors.dart';
 import '../manager/cubit_user_manager/cubit_user.dart';
 
 class VerificationScreen extends StatelessWidget {
@@ -26,7 +29,7 @@ class VerificationScreen extends StatelessWidget {
   String? userLoggedInOrRegister;
   UserModel? user;
   final GlobalKey<FormState> formKey = GlobalKey();
-  String? pinCode;
+  int? pinCode;
   BuildContext? dialogContext;
 
   VerificationScreen({super.key});
@@ -37,6 +40,10 @@ class VerificationScreen extends StatelessWidget {
     if (arguments != null) {
       user = arguments[userInfo] as UserModel;
       userLoggedInOrRegister = arguments[userLoginOrRegister];
+      debugPrint('here=${user!.phone.toString()}');
+      debugPrint('here=$userLoggedInOrRegister');
+      UserCubit.sendOtpEvent(
+          context, SendOtpModel(userPhone: int.parse(user!.phone!)));
     }
     return Scaffold(
       backgroundColor: ColorsManager.black,
@@ -45,23 +52,98 @@ class VerificationScreen extends StatelessWidget {
         child: BlocConsumer<UserCubit, UserState>(
           listener: (context, state) {
             debugPrint(state.runtimeType.toString());
-            if (state is UserRegisteringState) {
-              _showDialog(context);
-            }
+
+            ///login listener states
             if (state is UserLoggedInState) {
+              debugPrint('here= UserLoggedInState');
               Navigator.pop(dialogContext!);
-
-              Navigator.pushNamed(context, Routes.homeRoute);
+              if (state.userResponseEntity.state!) {
+                _showDialog(
+                    context: context,
+                    message: state.userResponseEntity.message,
+                    dialogType: DialogTypes.SUCCESS);
+                Timer(const Duration(milliseconds: Constants.dm2), () {
+                  Navigator.pop(dialogContext!);
+                  Navigator.pushNamed(context, Routes.homeRoute);
+                });
+              } else {
+                _showDialog(
+                    context: context,
+                    message: state.userResponseEntity.message,
+                    dialogType: DialogTypes.ERROR);
+                Timer(const Duration(milliseconds: Constants.dm2), () {
+                  Navigator.pop(dialogContext!);
+                });
+              }
+            }
+            if (state is UserLoginingState) {
+              debugPrint('here= UserLoginingState');
+              _showDialog(
+                  context: context,
+                  message: AppStrings.translate(AppStrings.loadingText),
+                  dialogType: DialogTypes.LOADING);
+            }
+            if (state is LoginUserFailedState) {
+              debugPrint('here= LoginUserFailedState');
+              Navigator.pop(dialogContext!);
+              _showDialog(
+                  context: context,
+                  message: state.message,
+                  dialogType: DialogTypes.ERROR);
+              Timer(const Duration(milliseconds: Constants.dm2), () {
+                Navigator.pop(dialogContext!);
+              });
+              debugPrint(state.message);
             }
 
-            debugPrint(state.runtimeType.toString());
+            ///register listener states
+            if (state is UserRegisteringState) {
+              debugPrint('here= UserRegisteringState');
+              _showDialog(
+                  context: context,
+                  message: AppStrings.translate(AppStrings.loadingText),
+                  dialogType: DialogTypes.LOADING);
+            }
             if (state is UserRegisteredState) {
+              debugPrint('here= UserRegisteredState');
               Navigator.pop(dialogContext!);
-
-              Navigator.pushNamed(context, Routes.clientLocationRoute);
+              if (state.userResponseEntity.state!) {
+                _showDialog(
+                    context: context,
+                    message: state.userResponseEntity.message,
+                    dialogType: DialogTypes.SUCCESS);
+                Timer(const Duration(milliseconds: Constants.dm2), () {
+                  Navigator.pop(dialogContext!);
+                  Navigator.pushNamed(context, Routes.clientLocationRoute);
+                });
+              } else {
+                _showDialog(
+                    context: context,
+                    message: state.userResponseEntity.message,
+                    dialogType: DialogTypes.ERROR);
+                Timer(const Duration(milliseconds: Constants.dm2), () {
+                  Navigator.pop(dialogContext!);
+                });
+              }
             }
             if (state is RegisteringUserFailedState) {
+              debugPrint('here= RegisteringUserFailedState');
+              Navigator.pop(dialogContext!);
+              _showDialog(
+                  context: context,
+                  message: state.message,
+                  dialogType: DialogTypes.ERROR);
+              Timer(const Duration(milliseconds: Constants.dm2), () {
+                Navigator.pop(dialogContext!);
+              });
               debugPrint(state.message);
+            }
+
+            ///send otp listener states
+            if (state is SendedOtpState) {
+              debugPrint('here= SendedOtpState');
+              pinCode = state.sendOtpResponseEntity.data;
+              debugPrint('here= ${pinCode.toString()}');
             }
           },
           builder: (context, state) {
@@ -80,7 +162,8 @@ class VerificationScreen extends StatelessWidget {
                         height: AppHeight.s31 * Constants.height,
                       ),
                       CustomTitle(
-                        text: AppStrings.translate(AppStrings.verification),
+                        text:
+                            AppStrings.translate(AppStrings.verificationTitle),
                       ),
                       SizedBox(
                         height: AppHeight.s10 * Constants.height,
@@ -90,7 +173,7 @@ class VerificationScreen extends StatelessWidget {
                             horizontal: AppWidth.s33 * Constants.width),
                         child: CustomRichText(
                           text:
-                              '${AppStrings.translate(AppStrings.enterVerificationCode)}${user!.phone}. ',
+                              '${AppStrings.translate(AppStrings.enterVerificationCodeMessage)}${user!.phone}. ',
                           textBtnColor: ColorsManager.maximumPurple,
                           btnText: AppStrings.translate(
                               AppStrings.reEnterNumberAgain),
@@ -112,15 +195,23 @@ class VerificationScreen extends StatelessWidget {
                             height: AppHeight.s27 * Constants.height,
                           ),
                           CustomRichText(
-                            text: AppStrings.translate(AppStrings.didntGetCode),
+                            text: AppStrings.translate(
+                                AppStrings.didntGetCodeMessage),
                             btnText: AppStrings.translate(AppStrings.resend),
+                            onPressed: () {
+                              UserCubit.sendOtpEvent(
+                                  context,
+                                  SendOtpModel(
+                                      userPhone: int.parse(user!.phone!)));
+                            },
                             textBtnColor: ColorsManager.maximumPurple,
                           ),
                           SizedBox(
                             height: AppHeight.s12 * Constants.height,
                           ),
                           Text(
-                            '00:15',
+                            AppStrings.translate(
+                                AppStrings.verificationCodeExpirationTime),
                             style: getSemiBoldStyle(
                                 fontSize: AppWidth.s20 * Constants.width,
                                 color: ColorsManager.eerieBlack),
@@ -151,7 +242,9 @@ class VerificationScreen extends StatelessWidget {
                   showError: ErrorsManagerCubit.contains(
                           context, AppErrors.pinCodeEmpty) ||
                       ErrorsManagerCubit.contains(
-                          context, AppErrors.pinCodeInvalid),
+                          context, AppErrors.pinCodeInvalid) ||
+                      ErrorsManagerCubit.contains(
+                          context, AppErrors.pinCodeNotMatch),
                   message: ErrorsManagerCubit.contains(
                           context, AppErrors.pinCodeEmpty)
                       ? ErrorsManagerCubit.getErrorMessage(
@@ -160,18 +253,40 @@ class VerificationScreen extends StatelessWidget {
                               context, AppErrors.pinCodeInvalid)
                           ? ErrorsManagerCubit.getErrorMessage(
                               context, AppErrors.pinCodeInvalid)
-                          : null,
+                          : ErrorsManagerCubit.contains(
+                                  context, AppErrors.pinCodeNotMatch)
+                              ? ErrorsManagerCubit.getErrorMessage(
+                                  context, AppErrors.pinCodeNotMatch)
+                              : null,
                   onSaved: (text) {
                     if (text!.isEmpty) {
                       ErrorsManagerCubit.addErrorType(
                           context, AppErrors.pinCodeEmpty);
                       return;
-                    } else if (text.length < Constants.pinCodeNumberOfDigits || text!=) {
+                    } else if (text.length < Constants.pinCodeNumberOfDigits) {
                       ErrorsManagerCubit.addErrorType(
                           context, AppErrors.pinCodeInvalid);
                       return;
+                    } else if (int.parse(text) != pinCode) {
+                      ErrorsManagerCubit.addErrorType(
+                          context, AppErrors.pinCodeNotMatch);
+                      return;
                     }
-                    pinCode = text;
+                    // pinCode = text;
+                    // checkOtpModel.code=int.parse(pinCode!);
+                  },
+                  validator: (text) {
+                    if (text!.isEmpty) {
+                      ErrorsManagerCubit.addErrorType(
+                          context, AppErrors.pinCodeEmpty);
+                    } else if (text.length < Constants.pinCodeNumberOfDigits) {
+                      ErrorsManagerCubit.addErrorType(
+                          context, AppErrors.pinCodeInvalid);
+                    } else if (int.parse(text) != pinCode) {
+                      ErrorsManagerCubit.addErrorType(
+                          context, AppErrors.pinCodeNotMatch);
+                    }
+                    return null;
                   },
                   onChanged: (text) {
                     debugPrint('change');
@@ -185,6 +300,11 @@ class VerificationScreen extends StatelessWidget {
                             context, AppErrors.pinCodeInvalid)) {
                       ErrorsManagerCubit.removeError(
                           context, AppErrors.pinCodeInvalid);
+                    }
+                    if (ErrorsManagerCubit.contains(
+                        context, AppErrors.pinCodeNotMatch)) {
+                      ErrorsManagerCubit.removeError(
+                          context, AppErrors.pinCodeNotMatch);
                     }
                   },
                 ),
@@ -210,15 +330,16 @@ class VerificationScreen extends StatelessWidget {
       );
 
   void _onSubmitPressed(BuildContext context) {
-    formKey.currentState!.save();
-    if (userLoggedInOrRegister == AppStrings.translate(AppStrings.login)) {
-      debugPrint('login process');
-      UserCubit.loginUserEvent(
-          context: context, phone: user!.phone!, password: user!.password!);
-    } else {
-      debugPrint('register process');
-
-      if (!ErrorsManagerCubit.hasErrors(context)) {
+    formKey.currentState!.validate();
+    debugPrint(ErrorsManagerCubit.hasErrors(context).toString());
+    if (!ErrorsManagerCubit.hasErrors(context)) {
+      formKey.currentState!.save();
+      if (userLoggedInOrRegister == AppStrings.translate(AppStrings.login)) {
+        debugPrint('login process');
+        UserCubit.loginUserEvent(
+            context: context, phone: user!.phone!, password: user!.password!);
+      } else {
+        debugPrint('register process');
         UserCubit.registerUserEvent(
           context,
           user!,
@@ -227,11 +348,18 @@ class VerificationScreen extends StatelessWidget {
     }
   }
 
-  void _showDialog(BuildContext context) => showDialog(
+  void _showDialog(
+          {required BuildContext context,
+          String? message,
+          required DialogTypes dialogType}) =>
+      showDialog(
         context: context,
         builder: (context) {
           dialogContext = context;
-          return const CustomDialog();
+          return CustomDialog(
+            message: message,
+            dialogType: dialogType,
+          );
         },
       );
 }

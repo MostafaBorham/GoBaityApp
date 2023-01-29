@@ -55,6 +55,7 @@ class CircularIconButton extends StatelessWidget {
             child: SvgPicture.asset(
               _asset!,
               fit: BoxFit.cover,
+              matchTextDirection: true,
               color: _assetColor,
             ),
           ),

@@ -16,32 +16,28 @@ import '../manager/cubit_categories/categories_manager_cubit.dart';
 import '../resources/strings_manager.dart';
 
 class CustomBottomSheet extends StatefulWidget {
-  const CustomBottomSheet({Key? key}) : super(key: key);
+  final Function(ItemModel item)? onItemSelected;
+  final Function(ItemModel item)? onCategorySelected;
+  final Function()? onPressed;
+  const CustomBottomSheet({this.onPressed,this.onItemSelected,Key? key, this.onCategorySelected}) : super(key: key);
 
   @override
   State<CustomBottomSheet> createState() => _CustomBottomSheetState();
 }
 
 class _CustomBottomSheetState extends State<CustomBottomSheet> {
+  int currentSelectedSortingFilterIndex=0;
+  int currentSelectedCategoryFilterIndex=0;
   List<ItemModel> tabs = [
     //tabs list
-    ItemModel(title: AppStrings.translate(AppStrings.sorting), active: true), //sorting tab
-    ItemModel(title: AppStrings.translate(AppStrings.type)), //type tab
+    ItemModel(title: AppStrings.sorting, active: true), //sorting tab
+    ItemModel(title: AppStrings.type), //type tab
   ];
   List<ItemModel> categoriesItems = [];
   List<ItemModel> sortingList = [
-    ItemModel(title: 'Price : Low and average prices'),
-    ItemModel(title: 'Delivery Time'),
-    ItemModel(title: 'Rating'),
-    ItemModel(title: 'Popular'),
-    ItemModel(title: 'Price : Low and average prices'),
-    ItemModel(title: 'Delivery Time'),
-    ItemModel(title: 'Rating'),
-    ItemModel(title: 'Popular'),
-    ItemModel(title: 'Price : Low and average prices'),
-    ItemModel(title: 'Delivery Time'),
-    ItemModel(title: 'Rating'),
-    ItemModel(title: 'Popular'),
+    ItemModel(title: 'Price : Low and average prices',id: 0),
+    ItemModel(title: 'Delivery Time',id: 1),
+    ItemModel(title: 'Rating',id: 2),
   ];
   List<ItemModel> categoriesList = [];
 
@@ -96,7 +92,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                           children: [
                             Text(
                               // filter text
-                              AppStrings.translate(AppStrings.filter), //filter constant string text
+                              AppStrings.filter, //filter constant string text
                               style: getSemiBoldStyle(
                                 //text widget is semibold
                                 color: ColorsManager.eerieBlack, // text color is eerie black
@@ -106,7 +102,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                             SizedBox(width: AppWidth.s75 * Constants.width), // horizontal space between filter and clear widget
                             Text(
                               // clear text
-                              AppStrings.translate(AppStrings.clear), //filter constant string text
+                              AppStrings.clear, //filter constant string text
                               style: getSemiBoldStyle(
                                   color: ColorsManager.eerieBlack, // text color is eerie black
                                   fontSize: AppWidth.s18 * Constants.width // font size is 18
@@ -143,7 +139,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                           padding: EdgeInsets.symmetric(horizontal: AppWidth.s29 * Constants.width),
                           child: Text(
                             // filter by text
-                            AppStrings.translate(AppStrings.filterBy), //filter by constant string text
+                            AppStrings.filterBy, //filter by constant string text
                             style: getMediumStyle(
                               color: ColorsManager.eerieBlack, // text color is eerie black
                               fontSize: AppWidth.s18 * Constants.width, // font size is 18
@@ -171,12 +167,13 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                 duration: const Duration(milliseconds: 500),
                                 padding: EdgeInsets.symmetric(horizontal: AppWidth.s29 * Constants.width),
                                 child: CustomSingleListCheckBox(
-                                  onItemSelected: (item) {},
+                                  onItemSelected: widget.onItemSelected,
                                   singleCheckBoxList: sortingList,
                                 )),
                             BlocBuilder<CategoriesManagerCubit, CategoriesManagerState>(
                               builder: (context, categoriesState) {
                                 if (categoriesState is CategoriesLoadedState) {
+                                  categoriesList.clear();
                                   for (var element in categoriesState.categories) {
                                     categoriesList.add(ItemModel(title: element.categoryName!,id: element.categoryId));
                                   }
@@ -186,9 +183,9 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                                     width: MediaQuery.of(context).size.width,
                                     duration: const Duration(milliseconds: 500),
                                     padding: EdgeInsets.symmetric(horizontal: AppWidth.s29 * Constants.width),
-                                    child: CustomMultipleListCheckBox(
-                                      onItemSelected: (items) {},
-                                      multipleCheckBoxList: categoriesList,
+                                    child: CustomSingleListCheckBox(
+                                      onItemSelected: widget.onCategorySelected,
+                                      singleCheckBoxList: categoriesList,
                                     ));
                               },
                             )
@@ -215,7 +212,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                   width: double.maxFinite,
                   child: CustomButton(
                     text: 'Show all results',
-                    onPressed: () {},
+                    onPressed: widget.onPressed,
                   ),
                 ),
               ),

@@ -234,8 +234,8 @@ class ClientApplyScreen extends StatelessWidget {
           userName: name,
           password: password,
           phone: '0$phone',
-
         ),
+        VerificationScreen.userLoginOrRegister: AppStrings.translate(AppStrings.register)
       });
     }
   }

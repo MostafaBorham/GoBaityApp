@@ -15,13 +15,14 @@ class ApiConstants {
   static const String sizesEntity = '${api}sizes';
   static const String likeEntity = 'like';
   static const String adsEntity = '${api}ads';
-  static const String usersEntity = '${api}users';
+  static const String usersEntity = '${api}Users';
   static const String basketEntity = '/Baskets/Single';
   static const String providerEntity = '${api}Foods/Provider';
   static const String locationSubEntity = 'UpdateLatLng';
   static const String userCategoriesEntity = '${api}Categories/GetUsedByProvider';
   static const String googleMapsBaseUrl = 'maps.googleapis.com';
   static const String googleMapsAutoCompleteApi = '/maps/api/place/autocomplete/json';
-
-
+  static const String favouriteEntity = '/favorite/';
+  static const String sendOtpEntity = '/SendOTP';
+  static const String checkOtpEntity = 'CheckOTP/';
 }

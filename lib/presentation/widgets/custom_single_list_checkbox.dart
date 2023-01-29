@@ -8,9 +8,11 @@ import 'package:yallabaity/presentation/widgets/custom_single_checkbox.dart';
 class CustomSingleListCheckBox extends StatefulWidget {
   List<ItemModel>? _singleCheckBoxList;
   void Function(ItemModel selected)? _onItemSelected;
+  int currentSelectedIndex;
   CustomSingleListCheckBox(
       {List<ItemModel>? singleCheckBoxList,
       void Function(ItemModel item)? onItemSelected,
+        this.currentSelectedIndex=0,
       Key? key})
       : super(key: key) {
     _singleCheckBoxList = singleCheckBoxList;
@@ -23,7 +25,6 @@ class CustomSingleListCheckBox extends StatefulWidget {
 }
 
 class _CustomSingleListCheckBoxState extends State<CustomSingleListCheckBox> {
-  int _index = 0;
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -33,10 +34,10 @@ class _CustomSingleListCheckBoxState extends State<CustomSingleListCheckBox> {
       itemBuilder: (context, index) => GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          if (widget._singleCheckBoxList![_index].active) {
+          if (widget._singleCheckBoxList![widget.currentSelectedIndex].active) {
 
           setState(() {
-            widget._singleCheckBoxList![_index].active =
+            widget._singleCheckBoxList![widget.currentSelectedIndex].active =
             false;
           });
           }
@@ -47,7 +48,7 @@ class _CustomSingleListCheckBoxState extends State<CustomSingleListCheckBox> {
           if (widget._singleCheckBoxList![index].active) {
 
             widget._onItemSelected!(widget._singleCheckBoxList![index]);
-            _index = index;
+            widget.currentSelectedIndex = index;
           }
         },
         child: CustomSingleCheckBox(

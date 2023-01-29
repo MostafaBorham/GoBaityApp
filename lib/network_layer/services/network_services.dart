@@ -22,7 +22,7 @@ class NetworkService {
   http.Client? client;
   NetworkService({required this.client});
 
-  Future<Map<String, dynamic>?> postOrUpdateMultipart(
+  Future<Map<String, dynamic>> postOrUpdateMultipart(
       {
         RequestType type = RequestType.post,
       String baseUrl = ApiConstants.baseUrl,

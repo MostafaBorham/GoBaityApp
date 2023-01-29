@@ -40,13 +40,13 @@ class Header extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
+          PositionedDirectional(
             top: 0,
-            left: 0,
+            start: 0,
             child: Padding(
-              padding: EdgeInsets.only(
+              padding: EdgeInsetsDirectional.only(
                 top: AppHeight.s45 * Constants.height,
-                left: Constants.margin,
+                start: Constants.margin,
               ),
               child: CircularIconButton(
                 asset: AssetsManager.back,

@@ -11,6 +11,7 @@ class AppStrings {
 
   static const String appName = "appName";
   static const String name = "name";
+  static const String loadingText = "loadingText";
   static const String streetError = "streetError";
   static const String buildingNameError = "buildingNameError";
   static const String floorError = "floorError";
@@ -26,6 +27,7 @@ class AppStrings {
   static const String invalidPasswordError = "invalidPasswordError";
   static const String sentCodeError = "sentCodeError";
   static const String invalidPinCodeError = "invalidPinCodeError";
+  static const String notMatchPinCodeError = "notMatchPinCodeError";
   static const String forgetPassword = "forgetPassword";
   static const String selectPreferedLanguage = "selectPreferedLanguage";
   static const String haveNewOrders = "haveNewOrders";
@@ -79,12 +81,13 @@ class AppStrings {
   static const String register="register";
   static const String password="password";
   static const String createPassword="createPassword";
-  static const String verification="verification";
-  static const String enterVerificationCode="enterVerificationCode";
+  static const String verificationTitle="verificationTitle";
+  static const String enterVerificationCodeMessage="enterVerificationCodeMessage";
   static const String reEnterNumberAgain="reEnterNumberAgain";
   static const String submit="submit";
-  static const String didntGetCode="didntGetCode";
+  static const String didntGetCodeMessage="didntGetCodeMessage";
   static const String resend="resend";
+  static const String verificationCodeExpirationTime="verificationCodeExpirationTime";
   static const String searchForAddress="searchForAddress";
   static const String confirmForDelivery="confirmForDelivery";
   static const String addressDetails="addressDetails";

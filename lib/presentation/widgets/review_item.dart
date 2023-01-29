@@ -19,27 +19,27 @@ class ReviewItem extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Align(
-        //   alignment: Alignment.topRight,
-        //   child: SizedBox(
-        //     height: AppWidth.s30 * Constants.width,
-        //     width: AppWidth.s30 * Constants.width,
-        //     child: IconButton(
-        //         onPressed: () {
-        //          debugPrint('yes');
-        //         },
-        //         visualDensity: VisualDensity.compact,
-        //         padding: EdgeInsets.zero,
-        //         constraints: BoxConstraints(),
-        //         icon: Icon(
-        //           Icons.edit,
-        //           color: ColorsManager.black.withOpacity(0.19),
-        //         )),
-        //   ),
-        // ),
-        // SizedBox(
-        //   height: AppHeight.s2 * Constants.height,
-        // ),
+        Align(
+          alignment: Alignment.topRight,
+          child: SizedBox(
+            height: AppWidth.s30 * Constants.width,
+            width: AppWidth.s30 * Constants.width,
+            child: IconButton(
+                onPressed: () {
+                 debugPrint('yes');
+                },
+                visualDensity: VisualDensity.compact,
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                icon: Icon(
+                  Icons.edit,
+                  color: ColorsManager.black.withOpacity(0.19),
+                )),
+          ),
+        ),
+        SizedBox(
+          height: AppHeight.s2 * Constants.height,
+        ),
         Row(// set widgets horizontally
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

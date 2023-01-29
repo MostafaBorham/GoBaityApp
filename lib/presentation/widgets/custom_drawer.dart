@@ -22,13 +22,13 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(right: AppWidth.s70 * Constants.width),
+      padding: EdgeInsetsDirectional.only(end: AppWidth.s70 * Constants.width),
       child: Drawer(
         width: double.maxFinite,
         child: Column(
           //set widgets vertically
           children: [
-            DrawerHeaderWidget(),
+            const DrawerHeaderWidget(),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(

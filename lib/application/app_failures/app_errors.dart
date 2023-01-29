@@ -18,6 +18,7 @@ enum AppErrors {
   password,
   pinCodeEmpty,
   pinCodeInvalid,
+  pinCodeNotMatch,
 
 
 }
@@ -39,4 +40,5 @@ enum AppErrors {
   AppErrors.password: AppStrings.translate(AppStrings.invalidPasswordError),
   AppErrors.pinCodeEmpty: AppStrings.translate(AppStrings.sentCodeError),
   AppErrors.pinCodeInvalid: AppStrings.translate(AppStrings.invalidPinCodeError),
+  AppErrors.pinCodeNotMatch: AppStrings.translate(AppStrings.notMatchPinCodeError),
 };

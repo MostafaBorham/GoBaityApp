@@ -18,10 +18,7 @@ class UserModel extends UserEntity {
     bool? isActive,
     bool? isDelete,
     String? governorate,
-/*  List<>? foodOrders;
-  List<Null>? userRatings;
-  List<Null>? usersLikes;
-  List<Null>? usersViews;*/
+
   }) : super(
             userId: userId,
             userName: userName,
@@ -42,9 +39,9 @@ class UserModel extends UserEntity {
 
   UserModel.fromJson(Map<String, dynamic> json) {
     userId = json['userId'];
-    userName = json['userName'];
-    password = json['password'];
-    phone = json['phone'];
+    userName = json['UserName'];
+    password = json['Password'];
+    phone = json['Phone'];
     image = json['image'];
     isProvider = json['isProvider'];
     address = json['address'];
@@ -57,38 +54,14 @@ class UserModel extends UserEntity {
     isActive = json['isActive'];
     isDelete = json['isDelete'];
     governorate = json['governorate'];
-/*    if (json['foodOrders'] != null) {
-      foodOrders = <Null>[];
-      json['foodOrders'].forEach((v) {
-        foodOrders!.add(new Null.fromJson(v));
-      });
-    }
-    if (json['userRatings'] != null) {
-      userRatings = <Null>[];
-      json['userRatings'].forEach((v) {
-        userRatings!.add(new Null.fromJson(v));
-      });
-    }
-    if (json['usersLikes'] != null) {
-      usersLikes = <Null>[];
-      json['usersLikes'].forEach((v) {
-        usersLikes!.add(new Null.fromJson(v));
-      });
-    }
-    if (json['usersViews'] != null) {
-      usersViews = <Null>[];
-      json['usersViews'].forEach((v) {
-        usersViews!.add(new Null.fromJson(v));
-      });
-    }*/
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['userId'] = userId;
-    data['userName'] = userName;
-    data['password'] = password;
-    data['phone'] = phone;
+    data['UserName'] = userName;
+    data['Password'] = password;
+    data['Phone'] = phone;
     data['image'] = image;
     data['isProvider'] = isProvider;
     data['address'] = address;
@@ -101,25 +74,13 @@ class UserModel extends UserEntity {
     data['isActive'] = isActive;
     data['isDelete'] = isDelete;
     data['governorate'] = governorate;
-    /*  if (this.foodOrders != null) {
-      data['foodOrders'] = this.foodOrders!.map((v) => v.toJson()).toList();
-    }
-    if (this.userRatings != null) {
-      data['userRatings'] = this.userRatings!.map((v) => v.toJson()).toList();
-    }
-    if (this.usersLikes != null) {
-      data['usersLikes'] = this.usersLikes!.map((v) => v.toJson()).toList();
-    }
-    if (this.usersViews != null) {
-      data['usersViews'] = this.usersViews!.map((v) => v.toJson()).toList();
-    }*/
     return data;
   }
   toMultiPart(http.MultipartRequest request)  {
     request.fields['UserId'] = userId!.toString();
-    request.fields['userName'] = userName!;
-    request.fields['password'] = password!;
-    request.fields['phone'] = phone!;
+    request.fields['UserName'] = userName!;
+    request.fields['Password'] = password!;
+    request.fields['Phone'] = phone!;
   }
   toEntity()=>this;
 }

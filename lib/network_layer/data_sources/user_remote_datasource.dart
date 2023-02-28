@@ -25,7 +25,8 @@ abstract class UserRemoteDataSource {
   Future<CheckOtpResponseModel> checkOtp(CheckOtpModel checkOtpModel);
   Future<AddressResponseModel> saveUserAddress(AddressModel address);
   Future<UserResponseModel> updateLocation(LocationModel location, int userId);
-  Future<UserResponseModel> login({required String phone, required String password});
+  Future<UserResponseModel> login(
+      {required String phone, required String password});
 }
 
 class UserImplWithHttp extends UserRemoteDataSource {
@@ -33,58 +34,71 @@ class UserImplWithHttp extends UserRemoteDataSource {
   UserImplWithHttp({required this.networkService});
   @override
   Future<UserResponseModel> register(UserModel user) async {
-    Map<String, dynamic>? response =
-        await networkService.postOrUpdateMultipart(entity: ApiConstants.usersEntity, body: user.toJson());
+    Map<String, dynamic>? response = await networkService.postOrUpdateMultipart(
+        entity: ApiConstants.usersEntity, body: user.toJson());
     return UserResponseModel.fromJson(response);
   }
 
   @override
-  Future<UserResponseModel> updateLocation(LocationModel location, int userId) async {
+  Future<UserResponseModel> updateLocation(
+      LocationModel location, int userId) async {
     Map<String, dynamic> json = location.toJson();
     Map<String, dynamic> response = await networkService.postOrUpdate(
       type: RequestType.update,
-      api: '${ApiConstants.usersEntity}/${ApiConstants.locationSubEntity}/${userId.toString()}',
+      api:
+          '${ApiConstants.usersEntity}/${ApiConstants.locationSubEntity}/${userId.toString()}',
       body: json,
     );
     if (response != null) {
-     debugPrint(response.toString());
+      debugPrint(response.toString());
       return UserResponseModel.fromJson(response);
     }
     throw ServerException();
   }
 
   @override
-  Future<UserResponseModel> login({required String phone, required String password}) async {
+  Future<UserResponseModel> login(
+      {required String phone, required String password}) async {
     Map<String, dynamic>? response = await networkService.postOrUpdate(
-        api: '${ApiConstants.usersEntity}/${ApiConstants.loginSubEntity}', body: {'phone': phone, 'password': password});
+        api: '${ApiConstants.usersEntity}/${ApiConstants.loginSubEntity}',
+        body: {'phone': phone, 'password': password});
     return UserResponseModel.fromJson(response);
   }
 
   @override
-  Future<AddressResponseModel> saveUserAddress(AddressModel address) async{
-    Map<String, dynamic>? response =
-        await networkService.postOrUpdate(api: '${ApiConstants.usersEntity}${address.userId}${ApiConstants.subUsersEntity}',body: address.toJson(),);
+  Future<AddressResponseModel> saveUserAddress(AddressModel address) async {
+    Map<String, dynamic>? response = await networkService.postOrUpdate(
+      api:
+          '${ApiConstants.usersEntity}${address.userId}${ApiConstants.subUsersEntity}',
+      body: address.toJson(),
+    );
     return AddressResponseModel.fromJson(response!);
   }
 
   @override
-  Future<FavouriteResponseModel> addToFavourites(FavouriteModel favourite) async{
-    Map<String, dynamic>? response =
-        await networkService.postOrUpdate(api: '${ApiConstants.usersEntity}${favourite.userId}${ApiConstants.favouriteEntity}${favourite.foodId}',body: {});
+  Future<FavouriteResponseModel> addToFavourites(
+      FavouriteModel favourite) async {
+    Map<String, dynamic>? response = await networkService.postOrUpdate(
+        api:
+            '${ApiConstants.usersEntity}${favourite.userId}${ApiConstants.favouriteEntity}${favourite.foodId}',
+        body: {});
     return FavouriteResponseModel.fromJson(response);
   }
 
   @override
-  Future<SendOtpResponseModel> sendOtp(SendOtpModel otpModel) async{
-    Map<String, dynamic>? response =
-    await networkService.postOrUpdate(api: '${ApiConstants.usersEntity}${ApiConstants.sendOtpEntity}',body: otpModel.toJson());
+  Future<SendOtpResponseModel> sendOtp(SendOtpModel otpModel) async {
+    Map<String, dynamic>? response = await networkService.postOrUpdate(
+        api: '${ApiConstants.usersEntity}${ApiConstants.sendOtpEntity}',
+        body: otpModel.toJson());
     return SendOtpResponseModel.fromJson(response);
   }
 
   @override
-  Future<CheckOtpResponseModel> checkOtp(CheckOtpModel checkOtpModel) async{
-    Map<String, dynamic>? response =
-        await networkService.postOrUpdate(api: '${ApiConstants.usersEntity}${ApiConstants.checkOtpEntity}${checkOtpModel.userPhone}',body: checkOtpModel.toJson());
+  Future<CheckOtpResponseModel> checkOtp(CheckOtpModel checkOtpModel) async {
+    Map<String, dynamic>? response = await networkService.postOrUpdate(
+        api:
+            '${ApiConstants.usersEntity}${ApiConstants.checkOtpEntity}${checkOtpModel.userPhone}',
+        body: checkOtpModel.toJson());
     return CheckOtpResponseModel.fromJson(response);
   }
 }

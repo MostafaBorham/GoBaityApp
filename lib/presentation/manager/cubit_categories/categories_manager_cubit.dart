@@ -11,26 +11,35 @@ import 'package:yallabaity/network_layer/models/data_models/category_model.dart'
 part 'categories_manager_state.dart';
 
 class CategoriesManagerCubit extends Cubit<CategoriesManagerState> {
-  CategoriesManagerCubit({required this.categoriesUseCases}) : super(CategoriesManagerInitial());
+  CategoriesManagerCubit({required this.categoriesUseCases})
+      : super(CategoriesManagerInitial());
   CategoriesUseCase categoriesUseCases;
 
-  getCategories()async{
+  getCategories() async {
     emit(CategoriesLoadingState());
-    final Either<Failure, CategoriesResponseEntity> categoriesResponse = await categoriesUseCases.getAll();
+    final Either<Failure, CategoriesResponseEntity> categoriesResponse =
+        await categoriesUseCases.getAll();
     categoriesResponse.fold(
-            (Failure failure) =>
+        (Failure failure) =>
             emit(CategoriesErrorState(message: mapFailureToMessage(failure))),
-            (CategoriesResponseEntity categoriesResponse) => emit(
-            CategoriesLoadedState(categories: categoriesResponse.data!.map((e) => e.fromEntityToModel).toList())));
-  }
-  getUserCategories(int id)async{
-    emit(CategoriesLoadingState());
-    final Either<Failure, CategoriesResponseEntity> categoriesResponse = await categoriesUseCases.getUserCategories(id);
-    categoriesResponse.fold(
-            (Failure failure) =>
-            emit(CategoriesErrorState(message: mapFailureToMessage(failure))),
-            (CategoriesResponseEntity categoriesResponse) => emit(
-            CategoriesLoadedState(categories: categoriesResponse.data!.map((e) => e.fromEntityToModel).toList())));
+        (CategoriesResponseEntity categoriesResponse) => emit(
+            CategoriesLoadedState(
+                categories: categoriesResponse.data!
+                    .map((e) => e.fromEntityToModel)
+                    .toList())));
   }
 
+  getUserCategories(int id) async {
+    emit(CategoriesLoadingState());
+    final Either<Failure, CategoriesResponseEntity> categoriesResponse =
+        await categoriesUseCases.getUserCategories(id);
+    categoriesResponse.fold(
+        (Failure failure) =>
+            emit(CategoriesErrorState(message: mapFailureToMessage(failure))),
+        (CategoriesResponseEntity categoriesResponse) => emit(
+            CategoriesLoadedState(
+                categories: categoriesResponse.data!
+                    .map((e) => e.fromEntityToModel)
+                    .toList())));
+  }
 }

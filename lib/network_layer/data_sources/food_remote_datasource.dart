@@ -24,8 +24,10 @@ abstract class FoodsRemoteDataSource {
 
   Future<ResponseModel> deleteFood(int id);
   Future<FoodViewAndOrderResponseModel> getFood(int id);
-  Future<FoodsResponseModel> getAll({required FoodsGetParamsModel foodsGetParams});
-  Future<CookFoodsResponseModel> getCookFoods({required CookGetParamsModel cookGetParams});
+  Future<FoodsResponseModel> getAll(
+      {required FoodsGetParamsModel foodsGetParams});
+  Future<CookFoodsResponseModel> getCookFoods(
+      {required CookGetParamsModel cookGetParams});
 }
 
 class FoodRemoteWithHttp extends FoodsRemoteDataSource {
@@ -35,7 +37,8 @@ class FoodRemoteWithHttp extends FoodsRemoteDataSource {
   Future<ResponseModel> addFood(FoodPostModel food) async {
 /*    foodsService.addFood(
         entity: ApiConstants.foodsEntity + ApiConstants.add, food: food);*/
-    Uri uri = Uri.https(ApiConstants.baseUrl, ApiConstants.foodsEntity, {'lang': 'en'});
+    Uri uri = Uri.https(
+        ApiConstants.baseUrl, ApiConstants.foodsEntity, {'lang': 'en'});
     http.MultipartRequest request = http.MultipartRequest('Post', uri);
     debugPrint(uri.toString());
     await food.toMultiPart(request);
@@ -43,7 +46,8 @@ class FoodRemoteWithHttp extends FoodsRemoteDataSource {
     if (response.statusCode == ApiConstants.success) {
       String body = String.fromCharCodes(await response.stream.toBytes());
       debugPrint(body);
-      ResponseModel responseModel = ResponseModel.fromJson(body.fromStringToJson);
+      ResponseModel responseModel =
+          ResponseModel.fromJson(body.fromStringToJson);
       return responseModel;
     } else {
       throw ServerException();
@@ -65,11 +69,13 @@ class FoodRemoteWithHttp extends FoodsRemoteDataSource {
   }
 
   @override
-  Future<FoodsResponseModel> getAll({required FoodsGetParamsModel foodsGetParams}) async {
+  Future<FoodsResponseModel> getAll(
+      {required FoodsGetParamsModel foodsGetParams}) async {
     try {
-      Map<String, dynamic> foodsString =
-          await networkService.get(api: ApiConstants.foodsEntity, queryParams: foodsGetParams.toJson());
-      FoodsResponseModel foodsResponse = FoodsResponseModel.fromJson(foodsString);
+      Map<String, dynamic> foodsString = await networkService.get(
+          api: ApiConstants.foodsEntity, queryParams: foodsGetParams.toJson());
+      FoodsResponseModel foodsResponse =
+          FoodsResponseModel.fromJson(foodsString);
       return foodsResponse;
     } on ServerException {
       throw ServerException();
@@ -95,8 +101,10 @@ class FoodRemoteWithHttp extends FoodsRemoteDataSource {
   @override
   Future<FoodViewAndOrderResponseModel> getFood(int id) async {
     try {
-      Map<String, dynamic> foodsString = await networkService.get(api: "${ApiConstants.foodsEntity}/$id");
-      FoodViewAndOrderResponseModel foodResponse = FoodViewAndOrderResponseModel.fromJson(foodsString);
+      Map<String, dynamic> foodsString =
+          await networkService.get(api: "${ApiConstants.foodsEntity}/$id");
+      FoodViewAndOrderResponseModel foodResponse =
+          FoodViewAndOrderResponseModel.fromJson(foodsString);
       return foodResponse;
     } on ServerException {
       throw ServerException();
@@ -106,11 +114,14 @@ class FoodRemoteWithHttp extends FoodsRemoteDataSource {
   }
 
   @override
-  Future<CookFoodsResponseModel> getCookFoods({required CookGetParamsModel cookGetParams}) async {
+  Future<CookFoodsResponseModel> getCookFoods(
+      {required CookGetParamsModel cookGetParams}) async {
     try {
-      Map<String, dynamic> cookFoodsString =
-          await networkService.get(api: ApiConstants.providerEntity, queryParams: cookGetParams.toJson());
-      CookFoodsResponseModel cookFoodsResponse = CookFoodsResponseModel.fromJson(cookFoodsString);
+      Map<String, dynamic> cookFoodsString = await networkService.get(
+          api: ApiConstants.providerEntity,
+          queryParams: cookGetParams.toJson());
+      CookFoodsResponseModel cookFoodsResponse =
+          CookFoodsResponseModel.fromJson(cookFoodsString);
       return cookFoodsResponse;
     } on ServerException {
       throw ServerException();
